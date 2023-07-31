@@ -1,0 +1,73 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Ubah Data Profil Mitra')
+
+@section('custom-css')
+@end
+
+@section('content')
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Data Profile Mitra</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              @if(flashMessages.has('error'))
+                <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+              @endif
+              @if(flashMessages.has('success'))
+                <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+              @endif
+              @if(data.nama_mitra == null)
+                <div class="alert alert-warning">Kamu Belum Mengisi Data Mitra <br/> Harap segera mengisi data mitra jika ingin menggunakan platform ini!</div>
+              @end
+              <form class="form" method="POST" action="{{ route('profile.updateMitra') }}">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="nim">Kode Mitra</label>
+                      <input type="text" id="nim" class="form-control" @if(data.kode_mitra) value="{{data.kode_mitra}}" @end name="kode_mitra">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="nama-lengkap">Nama Mitra</label>
+                      <input type="text" id="nama-lengkap" class="form-control" @if(data.nama_mitra) value="{{data.nama_mitra}}" @end name="nama_mitra">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="nim">Lokasi Mitra</label>
+                      <input type="text" id="nim" class="form-control" @if(data.nama_mitra) value="{{data.nama_mitra}}" @end name="lokasi_mitra">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="tanggal_lahir">Deskripsi Mitra</label>
+                      <textarea type="text" id="tanggal_lahir" class="form-control" name="deskripsi_mitra">{{data.deskripsi_mitra}}</textarea>
+                    </div>
+                  </div>
+                  <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-1 mb-1">
+                      Submit
+                    </button>
+                    <button type="reset" class="btn btn-light-secondary me-1 mb-1">
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+@end

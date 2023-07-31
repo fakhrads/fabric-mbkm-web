@@ -1,0 +1,137 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Check Data Mahasiswa')
+
+@section('custom-css')
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+    <link rel="stylesheet" href="/assets/css/pages/simple-datatables.css" />
+@end
+
+@section('content')
+  <!-- // Basic multiple Column Form section start -->
+  <section class="section" id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="py">
+            <a href="/wakilrektor/mbkm" class="btn btn-primary">Kembali</a>
+        </div>
+        <br/>
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Profile Mahasiswa : {{ nim }}</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+            <div class="alert alert-info">
+              Program Studi {{ data.program_studi }} telah menyetujui {{ data.nama_lengkap }} untuk mendaftar program MBKM {{ data_blockchain.program }}. <br/>
+            </div>
+              <form class="form">
+                <div class="row">
+                  <div class="col-md-4 col-12">
+                   <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-sm" width="250">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-12">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">NIM </h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.nim }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Nama Lengkap</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.nama_lengkap }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Tanggal Lahir</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.tanggal_lahir }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Fakultas</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.fakultas }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Program Studi</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.program_studi }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Jumlah SKS </h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.jumlah_sks }}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">IPK </h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{ data.ipk }}
+                          </div>
+                        </div>
+                        <hr>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 d-flex justify-content-center">
+                    <form action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
+                      <input type="hidden" value="{{ data_blockchain.id}}" name="id">
+                      <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
+                      <input type="hidden" value="{{ data_blockchain.program}}" name="program">
+                      <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
+                      <button type="submit" class="btn btn-success btn-lg me-1 mb-1" onclick="return confirm('Apakah kamu yakin ?')"><i class="bi bi-check"></i> Setujui</button>
+                    </form>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+
+chartProfileVisit.render()
+    </script>
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/js/pages/simple-datatables.js"></script>
+@end

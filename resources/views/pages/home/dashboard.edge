@@ -1,0 +1,27 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Dashboard')
+
+@section('custom-css')
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+    <link rel="stylesheet" href="/assets/css/pages/simple-datatables.css" />
+@end
+
+@section('content')
+  <section class="section">
+
+    <div class="alert alert-info">Selamat datang di Sistem Informasi MBKM UNIKOM.</div>
+  </section>
+@end
+
+@section('custom-js')
+
+chartProfileVisit.render()
+    </script>
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/js/pages/simple-datatables.js"></script>
+@end

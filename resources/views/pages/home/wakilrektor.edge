@@ -1,0 +1,72 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Dashboard Wakil Rektor')
+
+@section('custom-css')
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+    <link rel="stylesheet" href="/assets/css/pages/simple-datatables.css" />
+@end
+
+@section('content')
+  <section class="section">
+
+    <div class="alert alert-info">Selamat datang di Sistem Informasi MBKM UNIKOM.</div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Data Pendaftaran MBKM ( Per Tahun )</h4>
+          </div>
+          <div class="card-body">
+            <div id="chart-profile-visit" style="min-height: 315px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+    <script>
+      var optionsProfileVisit = {
+  annotations: {
+    position: "back",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  chart: {
+    type: "bar",
+    height: 300,
+  },
+  fill: {
+    opacity: 1,
+  },
+  plotOptions: {},
+  series: [
+    {
+      name: "Pendaftaran",
+      data: [0, 0, {{ data }}],
+    },
+  ],
+  colors: "#435ebe",
+  xaxis: {
+    categories: [2021, 2022, {{ data_tahun }}],
+  },
+}
+
+
+var chartProfileVisit = new ApexCharts(
+  document.querySelector("#chart-profile-visit"),
+  optionsProfileVisit
+)
+
+chartProfileVisit.render()
+    </script>
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/js/pages/simple-datatables.js"></script>
+@end

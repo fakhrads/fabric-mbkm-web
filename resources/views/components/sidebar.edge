@@ -1,0 +1,109 @@
+<div class="sidebar-menu">
+    <ul class="menu">
+        <li class="sidebar-title">Menu</li>
+        
+        <li
+            @if( request.url() == '/dashboard') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/dashboard" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Dashboard Utama</span>
+            </a>
+        </li>
+        @if(auth.user.role == 'Mahasiswa')
+        <li class="sidebar-title">Menu Mahasiswa</li>
+
+        <li
+            @if( request.url() == '/mahasiswa/sr') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/mahasiswa/sr" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Pembuatan Surat Prodi</span>
+            </a>
+        </li>
+        
+        <li
+            @if( request.url() == '/mahasiswa/mbkm') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/mahasiswa/mbkm" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Pembuatan Surat Universitas</span>
+            </a>
+        </li>
+
+        <li
+            @if( request.url() == '/mahasiswa/kegiatan') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/mahasiswa/kegiatan" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Upload Kegiatan</span>
+            </a>
+        </li>
+        @elseif(auth.user.role == 'ProgramStudi')
+        <!-- MENU PRODI -->
+        <li class="sidebar-title">Menu Prodi</li>
+
+        <li
+            @if( request.url() == '/prodi/sr') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/prodi/sr" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Olah Data Pembuatan Surat Prodi</span>
+            </a>
+        </li>
+        @elseif(auth.user.role == 'WakilRektor')
+        <!-- MENU WR -->
+        <li class="sidebar-title">Menu WR</li>
+
+        <li
+            @if( request.url() == '/wakilrektor/mbkm') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/wakilrektor/mbkm" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Olah Data Pendaftaran MBKM</span>
+            </a>
+        </li>
+        @elseif(auth.user.role == 'Mitra')
+        <!-- MENU MITRA -->
+        <li class="sidebar-title">Menu Mitra</li>
+
+        <li
+            @if( request.url() == '/mitra/nilai') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/mitra/nilai" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Upload Nilai</span>
+            </a>
+        </li>
+        @end
+
+        <li class="sidebar-item">
+            <a href="/logout" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+        
+    </ul>
+</div>

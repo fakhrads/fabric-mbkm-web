@@ -1,0 +1,80 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Pembuatan SR Prodi')
+
+@section('custom-css')
+    <link
+      rel="stylesheet"
+      href="/asset/extensions/simple-datatables/style.css"
+    />
+    <link rel="stylesheet" href="/asset/css/pages/simple-datatables.css" />
+@end
+
+@section('content')
+  <section class="section">
+    <div class="card">
+      <div class="col-12">
+        <div class="card-body">
+          @if(flashMessages.has('error'))
+            <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+          @endif
+          @if(flashMessages.has('success'))
+            <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+          @endif
+          <div class="row">
+          @if(status_pembuatan == false)
+            @if(status_sr == false)
+            <div class="alert alert-info">Silahkan pilih program MBKM yang diinginkan</div>
+            <form action="{{ route('sr.storeMahasiswa') }}" method="post">
+              <div class="col-md-6 mb-4">
+                <label class="form-label" for="basicSelect">Program</label>
+                <fieldset class="form-group">
+                  <select class="form-select" id="basicSelect" name="program">
+                    <option value="magang">Magang</option>
+                  </select>
+                </fieldset>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-group">
+                  <label for="nama-lengkap">NIM</label>
+                  <input type="text" id="nama-lengkap" class="form-control" value="{{ data.nim }}" name="nim">
+                </div>
+              </div>
+              <div class="col-sm-12 d-flex justify-content-end">
+                <button
+                  type="submit"
+                  class="btn btn-primary me-1 mb-1"
+                >
+                  Submit
+                </button>
+                <button
+                  type="reset"
+                  class="btn btn-light-secondary me-1 mb-1"
+                >
+                  Reset
+                </button>
+              </div>
+            </form>
+            @elseif(status_sr)
+              <div class="alert alert-success">
+                Pembuatan surat prodi sedang dilakukan.
+              </div>
+            @end
+          </div>
+          @else
+            <div class="alert alert-success">
+              Prodi telah menyetujui pendaftaran MBKM pada tanggal {{ new Date(tanggal).getDate() }} {{ new Date(tanggal).toLocaleString('default', { month: 'long' }) }} {{ new Date(tanggal).getFullYear() }} di jam {{ new Date(tanggal).getHours() }}:{{ new Date(tanggal).getMinutes() }} WIB, silahkan masuk halaman pendaftaran MBKM.
+            </div>
+          @end
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/asset/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/asset/js/pages/simple-datatables.js"></script>
+@end

@@ -1,0 +1,77 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Pembuatan SR Prodi')
+
+@section('custom-css')
+
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+
+    <link rel="stylesheet" href="/assets/compiled/css/table-datatable.css" />
+@end
+
+@section('content')
+  <section class="section">
+    <div class="card">
+      <!-- <div class="card-header">Data Guru Yayasan</div> -->
+      <div class="card-body">
+        @if(flashMessages.has('error'))
+          <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+        @endif
+        @if(flashMessages.has('success'))
+          <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+        @endif
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <th>NO </th>
+              <th>ID </th>
+              <th>NIM</th>
+              <th>Program</th>
+              <th>Status</th>
+              <th>Tanggal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each((item, index) in data)
+              <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.id }}</td>
+                <td>{{ item.nim }}</td>
+                <td>{{ item.program}}</td>
+                <td>{{ new Date(item.created_at).getDate() }} {{ new Date(item.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.created_at).getFullYear() }} {{ new Date(item.created_at).getHours() }}:{{ new Date(item.created_at).getMinutes() }}</td>
+                <td>
+                    @if(item.persetujuan == 'true')
+                      <div class="badge bg-success">Disetujui</div>
+                    @elseif(item.persetujuan == 'false')
+                      <div class="badge bg-warning">Belum Disetujui</div>
+                    @end
+                </td>
+                <td>
+                  <form action="{{ route('sr.setujuiSRP') }}" method="POST">
+                    <input type="hidden" value="{{ item.id}}" name="id">
+                    <input type="hidden" value="{{ item.nim }}" name="nim">
+                    <input type="hidden" value="{{ item.program}}" name="program">
+                    <input type="hidden" value="{{ item.created_at}}" name="created_at">
+                    <button type="submit" class="badge bg-info" onclick="return confirm('Apakah kamu yakin ?')">Setujui</button>
+                  </form>
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/static/js/pages/simple-datatables.js"></script>
+</script>
+@end

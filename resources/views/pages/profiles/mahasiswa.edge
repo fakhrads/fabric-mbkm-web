@@ -1,0 +1,91 @@
+@layout('layouts/base')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Ubah Data Profil Mahasiswa')
+
+@section('custom-css')
+@end
+
+@section('content')
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Data Profile Mahasiswa</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              @if(flashMessages.has('error'))
+                <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+              @endif
+              @if(flashMessages.has('success'))
+                <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+              @endif
+              @if(data.nim == null)
+                <div class="alert alert-warning">Kamu Belum Mengisi Data Mahasiswa <br/> Harap segera mengisi data mahasiswa jika ingin menggunakan platform ini!</div>
+              @end
+              <form class="form" method="POST" action="{{ route('profile.updateMahasiswa') }}">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="nama-lengkap">Nama Lengkap</label>
+                      <input type="text" id="nama-lengkap" class="form-control" @if(data) value="{{ data.nama_lengkap }}" @end name="nama_lengkap">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="nim">NIM</label>
+                      <input type="text" id="nim" class="form-control" @if(data) value="{{ data.nim }}" @end name="nim">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="tanggal_lahir">Tanggal Lahir</label>
+                      <input type="text" id="tanggal_lahir" class="form-control" @if(data) value="{{ data.tanggal_lahir }}" @end name="tanggal_lahir">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="fakultas">Fakultas</label>
+                      <input type="text" id="fakultas" class="form-control" @if(data) value="{{ data.fakultas }}" @end name="fakultas">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="program_studi">Program Studi</label>
+                      <input type="text" id="program_studi" class="form-control" @if(data) value="{{ data.program_studi }}" @end name="program_studi">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="ipk">IPK</label>
+                      <input type="text" id="ipk" class="form-control"  @if(data) value="{{ data.ipk }}" @end name="ipk">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="jumlah_sks">Jumlah SKS</label>
+                      <input type="text" id="jumlah_sks" class="form-control"  @if(data) value="{{ data.jumlah_sks }}" @end name="jumlah_sks">
+                    </div>
+                  </div>
+                  <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-1 mb-1">
+                      Submit
+                    </button>
+                    <button type="reset" class="btn btn-light-secondary me-1 mb-1">
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+@end
