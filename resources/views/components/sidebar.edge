@@ -23,8 +23,8 @@
                 class="sidebar-item">
             @end
             <a href="/mahasiswa/sr" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
-                <span>Pembuatan Surat Prodi</span>
+                <i class="bi bi-clipboard2-check-fill"></i>
+                <span>Permintaan Persetujuan Prodi</span>
             </a>
         </li>
         
@@ -35,7 +35,7 @@
                 class="sidebar-item">
             @end
             <a href="/mahasiswa/mbkm" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-file-earmark-fill"></i>
                 <span>Pembuatan Surat Universitas</span>
             </a>
         </li>
@@ -47,8 +47,20 @@
                 class="sidebar-item">
             @end
             <a href="/mahasiswa/kegiatan" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-activity"></i>
                 <span>Upload Kegiatan</span>
+            </a>
+        </li>
+        
+        <li
+            @if( request.url() == '/mahasiswa/profile') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/mahasiswa/profile" class='sidebar-link'>
+                <i class="bi bi-person"></i>
+                <span>Ubah Profile</span>
             </a>
         </li>
         @elseif(auth.user.role == 'ProgramStudi')
@@ -62,7 +74,7 @@
                 class="sidebar-item">
             @end
             <a href="/prodi/sr" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
                 <span>Olah Data Pembuatan Surat Prodi</span>
             </a>
         </li>
@@ -77,7 +89,7 @@
                 class="sidebar-item">
             @end
             <a href="/wakilrektor/mbkm" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
                 <span>Olah Data Pendaftaran MBKM</span>
             </a>
         </li>
@@ -92,15 +104,15 @@
                 class="sidebar-item">
             @end
             <a href="/mitra/nilai" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
-                <span>Upload Nilai</span>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                <span>Olah Data Nilai</span>
             </a>
         </li>
         @end
 
         <li class="sidebar-item">
             <a href="/logout" class='sidebar-link'>
-                <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-box-arrow-left"></i>
                 <span>Logout</span>
             </a>
         </li>

@@ -10,6 +10,10 @@ import './routes/wakilrektor'
 import Route from '@ioc:Adonis/Core/Route'
 const axios = require('axios');
 
+Route.get('/', async ({ view }) => {
+  return view.render('welcome')
+})
+
 Route.get('/dashboard', async ({ view, auth }) => {
   await auth.use('web').authenticate()
   
@@ -43,3 +47,6 @@ Route.get('/dashboard', async ({ view, auth }) => {
     return view.render('pages/home/dashboard')
   }
 })
+
+Route.get('/rekognisi', 'RekognisiController.index')
+Route.get('/rekognisi/:nim', 'RekognisiController.show')

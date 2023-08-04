@@ -2,6 +2,8 @@
 
 @set('title','UNIKOM MBKM')
 @set('pageHeader','Pembuatan SR Universitas')
+@set('subTitle', 'Halaman pembuatan surat rekomendasi universitas')
+@set('breadCum', 'Pembuatan Surat Universitas')
 
 @section('custom-css')
     <link
@@ -15,13 +17,13 @@
   <section class="section">
     <div class="card">
       <div class="card-body">
+        <div class="row">
         @if(flashMessages.has('error'))
           <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
         @endif
         @if(flashMessages.has('success'))
           <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
         @endif
-        <div class="row">
         @if(status_pendaftaran == false)
           @if(status_mbkm == false)
             @if(status_sr)
@@ -30,7 +32,7 @@
                   <div class="col-md-12 mb-4">
                     <label class="form-label" for="basicSelect">Program</label>
                     <fieldset class="form-group">
-                      <select class="form-select" id="basicSelect" name="program">
+                      <select class="form-select" id="basicSelect" name="program" required>
                         <option value="magang">Magang</option>
                         <option value="mengajar">Kampus Mengajar</option>
                       </select>
@@ -39,7 +41,7 @@
                   <div class="col-md-12 mb-4">
                     <label class="form-label" for="basicSelect">Mitra</label>
                     <fieldset class="form-group">
-                      <select class="form-select" id="basicSelect" name="mitra">
+                      <select class="form-select" id="basicSelect" name="mitra" required>
                         <option>Pilih Mitra...</option>
                         @each(item in data_mitra)
                           <option value="{{ item.kode_mitra }}">{{ item.nama_mitra }}</option>
@@ -65,7 +67,7 @@
               </form>
               @elseif(status_sr == false)
                 <div class="alert alert-danger">
-                  Prodi belum menyetujui pendaftaran MBKM. Silahkan hubungi prodi untuk segera menyetujui pendaftaran.
+                  Prodi belum menyetujui pendaftaran MBKM atau kamu belum membuat permintaan persetujuan ke prodi.
                 </div>
               @end
             </div>
@@ -78,6 +80,10 @@
           <div class="alert alert-success">
             Pembuatan surat rekomendasi universitas sudah di setujui. <br>
             Tanggal pembuatan : {{ new Date(tanggal).getDate() }} {{ new Date(tanggal).toLocaleString('default', { month: 'long' }) }} {{ new Date(tanggal).getFullYear() }} di jam {{ new Date(tanggal).getHours() }}:{{ new Date(tanggal).getMinutes() }} WIB
+          </div>
+          <br/>
+          <div class="col-12 d-flex justify-content-center">
+            <a href="https://{{ data_b.Record.file }}.ipfs.w3s.link" class="btn btn-success btn-lg me-1 mb-1" ><i class="bi bi-cloud-download-fill" target="_blank"></i> Unduh Surat</a>
           </div>
         @end
       </div>

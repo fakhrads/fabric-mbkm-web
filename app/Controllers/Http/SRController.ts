@@ -82,6 +82,7 @@ export default class SRController {
       "",
       program,
       'true',
+      'false',
       created_at
     ]
     
@@ -131,6 +132,35 @@ export default class SRController {
       session.flash('success', 'Pembuatan SR berhasil dilakukan')
       return response.redirect().back()
     } catch(e) {
+      console.log(e)
+      session.flash('error', e.message)
+      return response.redirect().back()
+    }
+  }
+
+  public async checkPendaftar({ request, view, auth, response, session }: HttpContextContract) {
+    await auth.use('web').authenticate()
+
+    const nim = request.param('nim')
+    try {
+      const data = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
+
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/sr-chaincode/QueryAsset",
+        [ data.nim ], {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      )
+      let status = false;
+      if (res.data[0].Record.persetujuan == "true") {
+        status = true
+      } else if (res.data[0].Record.persetujuan == "false") {
+        status = false
+      }
+
+      return view.render('pages/prodi/sr_check', { nim: nim, data: data, data_blockchain: res.data[0].Record, status: status })
+    } catch (e) {
       console.log(e)
       session.flash('error', e.message)
       return response.redirect().back()

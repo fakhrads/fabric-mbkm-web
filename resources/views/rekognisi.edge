@@ -1,0 +1,130 @@
+@layout('layouts/auth')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Pembuatan SR Prodi')
+
+@section('custom-css')
+    <link rel="stylesheet" href="/assets/custom.css" />
+    
+    <link
+      rel="stylesheet"
+      href="/asset/extensions/simple-datatables/style.css"
+    />
+    <link rel="stylesheet" href="/assets/css/pages/simple-datatables.css" />
+@end
+
+@section('content')
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-12">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-body">
+                    <h1 class="text-center">Rekognisi Hasil Pembelajaran MBKM untuk NIM 10191116</h1>
+                      <br/>
+                      <br/>
+                      <div class="row">
+                        <div class="col">
+                            <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
+                                        <div class="inner-circle"></div>
+                                        <p class="h6 mt-3 mb-1">2023-03-01</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan Prodi</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2004">
+                                        <div class="inner-circle"></div>
+                                        <p class="h6 mt-3 mb-1">2023-03-05</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan WR</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2005">
+                                        <div class="inner-circlex"></div>
+                                        <p class="h6 mt-3 mb-1">------</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Pelaksanaan MBKM</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2010">
+                                        <div class="inner-circlex"></div>
+                                        <p class="h6 mt-3 mb-1">------</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Laporan Penilaian MBKM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <br/>
+                      <br/>
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-6 col-12">
+                          <div class="tracking-list">
+                          
+                            @if(sr_univ.length > 0)
+                            <div class="tracking-item">
+                               <div class="tracking-icon status-inforeceived">
+                                  <i class="bi bi-clipboard"></i>
+                                  <!-- <i class="fas fa-clipboard-list"></i> -->
+                               </div>
+                               <div class="tracking-date">{{ sr_univ[0].Record.updated_at }}<span>02:02 PM</span></div>
+                               <div class="tracking-content">Pembuatan Surat Rekomendasi Universitas.
+                                <span>
+                                  @if(sr_univ[0].Record.persetujuan == 'true') 
+                                    <div class="badge bg-success">Telah Disetujui</div>
+                                  @else
+                                    <div class="badge bg-info">Menunggu Disetujui</div>
+                                  @end
+                                </span>
+                               </div>
+                            </div>
+                            @endif
+
+                            @if(sr_prodi.length > 0)
+                            <div class="tracking-item">
+                               <div class="tracking-icon status-inforeceived">
+                                  <i class="bi bi-clipboard"></i>
+                                  <!-- <i class="fas fa-clipboard-list"></i> -->
+                               </div>
+                               <div class="tracking-date">{{ sr_prodi[0].Record.updated_at }}<span>02:02 PM</span></div>
+                               <div class="tracking-content">Persetujuan Program Studi.
+                                <span>
+                                  @if(sr_prodi[0].Record.persetujuan == 'true') 
+                                    <div class="badge bg-success">Telah Disetujui</div>
+                                  @else
+                                    <div class="badge bg-info">Menunggu Disetujui</div>
+                                  @end
+                                </span>
+                               </div>
+                            </div>
+                            @endif
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                          Nama Lengkap : {{ data_mahasiswa.nama_lengkap }} <br/>
+                          NIM : {{ data_mahasiswa.nim }} <br/>
+                          Prodi : {{ data_mahasiswa.program_studi }} <br/>
+                          Fakultas : {{ data_mahasiswa.fakultas }}<br/>
+                          Semester : 8 <br/>
+                          SKS : {{ data_mahasiswa.jumlah_sks }} <br/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/asset/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/asset/js/pages/simple-datatables.js"></script>
+@end

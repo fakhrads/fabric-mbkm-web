@@ -1,7 +1,9 @@
 @layout('layouts/base')
 
 @set('title','UNIKOM MBKM')
-@set('pageHeader','Pembuatan SR Prodi')
+@set('pageHeader','Permintaan Persetujuan Prodi')
+@set('subTitle', 'Halaman pengolahan data permintaan perseujuan Prodi')
+@set('breadCum', 'Persetujuan MBKM')
 
 @section('custom-css')
 
@@ -52,6 +54,7 @@
                     @end
                 </td>
                 <td>
+                  <a href="/prodi/sr/{{ item.nim }}" class="btn btn-primary">Check</a>
                   <form action="{{ route('sr.setujuiSRP') }}" method="POST">
                     <input type="hidden" value="{{ item.id}}" name="id">
                     <input type="hidden" value="{{ item.nim }}" name="nim">

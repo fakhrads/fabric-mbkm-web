@@ -1,7 +1,9 @@
 @layout('layouts/base')
 
 @set('title','UNIKOM MBKM')
-@set('pageHeader','Pembuatan SR Prodi')
+@set('pageHeader','Permintaan persetujuan Prodi')
+@set('subTitle', 'Halaman permintaan persetujuan Prodi')
+@set('breadCum', 'Permintaan persetujuan Prodi')
 
 @section('custom-css')
     <link
@@ -30,7 +32,7 @@
               <div class="col-md-6 mb-4">
                 <label class="form-label" for="basicSelect">Program</label>
                 <fieldset class="form-group">
-                  <select class="form-select" id="basicSelect" name="program">
+                  <select class="form-select" id="basicSelect" name="program" required>
                     <option value="magang">Magang</option>
                   </select>
                 </fieldset>
@@ -38,7 +40,7 @@
               <div class="col-md-6 mb-4">
                 <div class="form-group">
                   <label for="nama-lengkap">NIM</label>
-                  <input type="text" id="nama-lengkap" class="form-control" value="{{ data.nim }}" name="nim">
+                  <input type="text" id="nama-lengkap" class="form-control" value="{{ data.nim }}" name="nim" required>
                 </div>
               </div>
               <div class="col-sm-12 d-flex justify-content-end">

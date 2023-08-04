@@ -1,0 +1,56 @@
+@layout('layouts/landing')
+
+@set('title','UNIKOM MBKM')
+@set('pageHeader','Pembuatan SR Prodi')
+
+@section('custom-css')
+    <link
+      rel="stylesheet"
+      href="/asset/extensions/simple-datatables/style.css"
+    />
+    <link rel="stylesheet" href="/asset/css/pages/simple-datatables.css" />
+@end
+
+@section('content')
+  <section class="vh-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-6">
+          <h1 class="text-center">Sistem Rekognisi MBKM Berbasis Blockchain</h1>
+          <div class="card shadow-lg">
+            <div class="card-content">
+              <div class="card-body">
+                <form class="form form-horizontal">
+                  <div class="form-body">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label for="first-name-horizontal">NIM Mahasiswa</label>
+                      </div>
+                      <div class="col-md-12 form-group">
+                        <input type="text" id="first-name-horizontal" class="form-control" name="fname" placeholder="Masukkan NIM Mahasiswa ...">
+                      </div>
+                      
+                      <div class="col-sm-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-1 mb-1">
+                          Submit
+                        </button>
+                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">
+                          Reset
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/asset/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/asset/js/pages/simple-datatables.js"></script>
+@end

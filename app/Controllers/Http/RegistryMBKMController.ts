@@ -65,8 +65,12 @@ export default class RegistryMBKMController {
           tanggal = result2[i].Record.updated_at
         }
       }
-      console.log(status_mbkm)
-      return view.render('pages/mahasiswa/mbkm_new', { status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data })
+      if(status_pendaftaran == true) {
+        console.log(result2)
+        return view.render('pages/mahasiswa/mbkm_new', { data_b: result2[0], status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data })
+      } else {
+        return view.render('pages/mahasiswa/mbkm_new', { status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data })
+      }
     } catch (e) {
       if(e.message === 'E_ROW_NOT_FOUND: Row not found') {
         session.flash('error', 'Anda belum mengisi data diri')
@@ -138,85 +142,96 @@ export default class RegistryMBKMController {
 
   public async setujuiMBKM({ auth, session, response, request }: HttpContextContract) {
     await auth.use('web').authenticate()
+    
+    const mitra = request.input('mitra')
+    const program = request.input('program')
+    const nim = request.input('nim')
+    const id = request.input('id')
+    const created_at = request.input('created_at')
+    console.log("UDAH DISINI")
+    try {// Load the docx file as binary content
+      const content = fs.readFileSync(
+        path.resolve("template_surat", "template_sru.docx"),
+        "binary"
+      );
+      const zip = new PizZip(content);
 
-    // Load the docx file as binary content
-    const content = fs.readFileSync(
-      path.resolve("template_surat", "template_sru.docx"),
-      "binary"
-    );
-
-    const zip = new PizZip(content);
-
-    const doc = new Docxtemplater(zip, {
-      paragraphLoop: true,
-      linebreaks: true,
-    });
-
-    // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
-    doc.render({
-      nama_lengkap: "Fakhri Adi Saputra",
-      username: "10119116",
-      semester: "7",
-      ipk: "3.49",
-      sks: "135"
-    });
-
-    const buf = doc.getZip().generate({
-      type: "nodebuffer",
-      // compression: DEFLATE adds a compression step.
-      // For a 50MB output document, expect 500ms additional CPU time
-      compression: "DEFLATE",
-    });
-
-    // buf is a nodejs Buffer, you can either write it to a
-    // file or res.send it with express for example.
-    try {
-      fs.writeFileSync(path.resolve("surat", "output.docx"), buf);
-
-    } catch (e) {
-      
-      session.flash('error', 'Gagal Membuat Surat Rekomendasi Universitas')
-      return response.redirect().back()
-    }
-
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM4ZjNjRjZiMTFGNjBiRjJlODg5ZjEzODljRjI4MjQ0QjZDQkFBNTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTAxODY3NzQ0NjEsIm5hbWUiOiJza3JpcHNpIn0.4wGz4ChtMzoR-86ITyh3jcI3u13K4jhu9J3f203WIGE"
-    const storage = new Web3Storage({ token})
-    try {
-      const pathFiles = await getFilesFromPath("surat/output.docx")
-      const cid = await storage.put(pathFiles)
-      console.log('Content added with CID:', cid)
-      const data = session.get('user')
-      const mitra = request.input('mitra')
-      const program = request.input('program')
-      const nim = request.input('nim')
-      const id = request.input('id')
-      
-      // axios
-      const payload = {
-        method: "UpdateAsset",
-        args: [
-          id,
-          mitra,
-          nim,
-          cid,
-          program,
-          "true"
-        ],
-      };
-      
-      const res = await axios.post("http://localhost:8801/invoke/pendaftaran/registry-chaincode", 
-        payload, {
-          headers: {
-            Authorization: 'Bearer ' + data.token,
-          }
+      const doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
+      console.log("Udah disini")
+      try{
+        const mahasiswa = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
+        // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+        doc.render({
+          nama_lengkap: mahasiswa.nama_lengkap,
+          username: mahasiswa.nim,
+          semester: "8",
+          ipk: mahasiswa.ipk,
+          sks: mahasiswa.jumlah_sks
         });
-      console.log(res);
       
-      session.flash('success', 'Telah berhasil menyetujui surat rekomendasi universitas')
-      return response.redirect().back()
+        const buf = doc.getZip().generate({
+          type: "nodebuffer",
+          // compression: DEFLATE adds a compression step.
+          // For a 50MB output document, expect 500ms additional CPU time
+          compression: "DEFLATE",
+        });
+      
+        // buf is a nodejs Buffer, you can either write it to a
+        // file or res.send it with express for example.
+        try {
+          fs.writeFileSync(path.resolve("surat", "output.docx"), buf);
+        
+        } catch (e) {
+
+          session.flash('error', e.message)
+          return response.redirect().back()
+        }
+        
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM4ZjNjRjZiMTFGNjBiRjJlODg5ZjEzODljRjI4MjQ0QjZDQkFBNTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTAxODY3NzQ0NjEsIm5hbWUiOiJza3JpcHNpIn0.4wGz4ChtMzoR-86ITyh3jcI3u13K4jhu9J3f203WIGE"
+        const storage = new Web3Storage({ token})
+        const pathFiles = await getFilesFromPath("surat/output.docx")
+        const cid = await storage.put(pathFiles)
+        console.log('Content added with CID:', cid)
+        try {
+          const payload = [
+            id,
+            mitra,
+            nim,
+            cid,
+            program,
+            "true",
+            "false",
+            created_at
+          ];
+
+          const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/UpdateAsset", 
+            payload, {
+              headers: {
+                "X-API-Key": auth.user!.role,
+              }
+            });
+          console.log(res);
+          session.flash('success', res.data.message + " ID Transaksi Blockchain : " + res.data.idTrx)
+          return response.redirect().back()
+
+        } catch (e) {
+          console.log(e)
+          session.flash('error', e.message)
+          return response.redirect().back()
+        }
+
+      } catch (e) {
+        console.log(e)
+        session.flash('error', e.message)
+        return response.redirect().back()
+      }
+
     } catch (e) {
-      
-      session.flash('error', 'Gagal Membuat Surat Rekomendasi Universitas (2)')
+      console.log(e)
+      session.flash('error', 'Gagal Generate Surat Rekomendasi Universitas')
       return response.redirect().back()
     }
   }
@@ -235,8 +250,14 @@ export default class RegistryMBKMController {
           }
         }
       )
+      let status = false;
+      if (res.data[0].Record.persetujuan == "true") {
+        status = true
+      } else if (res.data[0].Record.persetujuan == "false") {
+        status = false
+      }
 
-      return view.render('pages/wakilrektor/check_pendaftar', { nim: nim, data: data, data_blockchain: res.data[0].Record })
+      return view.render('pages/wakilrektor/check_pendaftar', { nim: nim, data: data, data_blockchain: res.data[0].Record, status: status })
     } catch (e) {
       console.log(e)
       session.flash('error', e.message)

@@ -1,9 +1,9 @@
 @layout('layouts/base')
 
 @set('title','UNIKOM MBKM')
-@set('pageHeader','Pembuatan Surat Rekomendasi Universitas')
-@set('subTitle', 'Halaman pengolahan data MBKM mahasiswa')
-@set('breadCum', 'Surat Rekomendasi Universitas')
+@set('pageHeader','Data Kegiatan MBKM Mahasiswa')
+@set('subTitle', 'Halaman pengolahan data kegiatan mahasiswa')
+@set('breadCum', 'Kegiatan MBKM')
 
 @section('custom-css')
 
@@ -17,6 +17,13 @@
 
 @section('content')
   <section class="section">
+  <div class="row">
+    <div class="col-12">
+        <div class="col-md-12 mb-4">
+          <a href="/mahasiswa/kegiatan/new" class="btn btn-primary btn-md float-end">Tambah Data Baru</a>
+      </div>
+    <br/>
+    <br/>
     <div class="card">
       <!-- <div class="card-header">Data Guru Yayasan</div> -->
       <div class="card-body">
@@ -31,11 +38,10 @@
             <tr>
               <th>NO </th>
               <th>ID </th>
-              <th>Mitra</th>
-              <th>NIM</th>
-              <th>Program</th>
+              <th>NO Pendaftaran </th>
+              <th>Nama Kegiatan</th>
+              <th>Deskripsi</th>
               <th>Tanggal</th>
-              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -43,31 +49,25 @@
             @each((item, index) in data)
               <tr>
                 <td>{{ index + 1 }}</td>
-                <td>{{ item.id }}</td>
-                <td>{{ item.mitraId }}</td>
-                <td>{{ item.nim }}</td>
-                <td>{{ item.program}}</td>
-                <td>{{ new Date(item.created_at).getDate() }} {{ new Date(item.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.created_at).getFullYear() }} {{ new Date(item.created_at).getHours() }}:{{ new Date(item.created_at).getMinutes() }}</td>
-                <td>
-                    @if(item.persetujuan == 'true')
-                      <div class="badge bg-success">Disetujui</div>
-                    @elseif(item.persetujuan == 'false')
-                      <div class="badge bg-warning">Belum Disetujui</div>
-                    @end
-                </td>
-                <td>
-                    <a href="/wakilrektor/mbkm/{{ item.nim }}" class="btn btn-primary">Check</a>
-                </td>
+                <td>{{ item.Record.id }}</td>
+                <td>{{ item.Record.pendaftaranId}}</td>
+                <td>{{ item.Record.nim }}</td>
+                <td>{{ item.Record.nama_kegiatan }}</td>
+                <td>{{ item.Record.deskripsi }}</td>
+                <td>{{ new Date(item.Record.created_at).getDate() }} {{ new Date(item.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.Record.created_at).getFullYear() }} {{ new Date(item.Record.created_at).getHours() }}:{{ new Date(item.Record.created_at).getMinutes() }}</td>
               </tr>
             @end
           </tbody>
         </table>
       </div>
     </div>
+    </div>
+        </div>
   </section>
 @end
 
 @section('custom-js')
+
     <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="/assets/static/js/pages/simple-datatables.js"></script>
 </script>

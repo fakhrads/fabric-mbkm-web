@@ -1,9 +1,9 @@
 @layout('layouts/base')
 
 @set('title','UNIKOM MBKM')
-@set('pageHeader','Pembuatan Surat Rekomendasi Universitas')
-@set('subTitle', 'Halaman pengolahan data MBKM mahasiswa')
-@set('breadCum', 'Surat Rekomendasi Universitas')
+@set('pageHeader','Olah Data Nilai')
+@set('subTitle', 'Halaman pengolahan data nilai mahasiswa')
+@set('breadCum', 'Nilai MBKM')
 
 @section('custom-css')
 
@@ -17,6 +17,13 @@
 
 @section('content')
   <section class="section">
+  <div class="row">
+    <div class="col-12">
+        <div class="col-md-12 mb-4">
+          <a href="/mitra/nilai/new" class="btn btn-primary btn-md float-end">Tambah Data Baru</a>
+      </div>
+    <br/>
+    <br/>
     <div class="card">
       <!-- <div class="card-header">Data Guru Yayasan</div> -->
       <div class="card-body">
@@ -31,11 +38,10 @@
             <tr>
               <th>NO </th>
               <th>ID </th>
-              <th>Mitra</th>
               <th>NIM</th>
               <th>Program</th>
-              <th>Tanggal</th>
               <th>Status</th>
+              <th>Tanggal</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -44,7 +50,6 @@
               <tr>
                 <td>{{ index + 1 }}</td>
                 <td>{{ item.id }}</td>
-                <td>{{ item.mitraId }}</td>
                 <td>{{ item.nim }}</td>
                 <td>{{ item.program}}</td>
                 <td>{{ new Date(item.created_at).getDate() }} {{ new Date(item.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.created_at).getFullYear() }} {{ new Date(item.created_at).getHours() }}:{{ new Date(item.created_at).getMinutes() }}</td>
@@ -56,7 +61,13 @@
                     @end
                 </td>
                 <td>
-                    <a href="/wakilrektor/mbkm/{{ item.nim }}" class="btn btn-primary">Check</a>
+                  <form action="{{ route('sr.setujuiSRP') }}" method="POST">
+                    <input type="hidden" value="{{ item.id}}" name="id">
+                    <input type="hidden" value="{{ item.nim }}" name="nim">
+                    <input type="hidden" value="{{ item.program}}" name="program">
+                    <input type="hidden" value="{{ item.created_at}}" name="created_at">
+                    <button type="submit" class="badge bg-info" onclick="return confirm('Apakah kamu yakin ?')">Setujui</button>
+                  </form>
                 </td>
               </tr>
             @end
@@ -64,10 +75,13 @@
         </table>
       </div>
     </div>
+    </div>
+        </div>
   </section>
 @end
 
 @section('custom-js')
+
     <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="/assets/static/js/pages/simple-datatables.js"></script>
 </script>

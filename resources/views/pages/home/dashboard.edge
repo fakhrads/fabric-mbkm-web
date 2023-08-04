@@ -2,6 +2,8 @@
 
 @set('title','UNIKOM MBKM')
 @set('pageHeader','Dashboard')
+@set('subTitle', 'Dashboard MBKM')
+@set('breadCum', '')
 
 @section('custom-css')
     <link
@@ -19,9 +21,6 @@
 @end
 
 @section('custom-js')
-
-chartProfileVisit.render()
-    </script>
     <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="/assets/js/pages/simple-datatables.js"></script>
 @end

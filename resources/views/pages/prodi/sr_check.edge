@@ -19,7 +19,7 @@
     <div class="row match-height">
       <div class="col-12">
         <div class="py">
-            <a href="/wakilrektor/mbkm" class="btn btn-primary">Kembali</a>
+            <a href="/prodi/sr" class="btn btn-primary">Kembali</a>
         </div>
         <br/>
         <div class="card">
@@ -34,15 +34,11 @@
             @if(flashMessages.has('success'))
               <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
             @endif
-            @if(status == false)
-              <div class="alert alert-info">
-                Program Studi {{ data.program_studi }} telah menyetujui {{ data.nama_lengkap }} untuk mendaftar program MBKM {{ data_blockchain.program }}. <br/>
-              </div>
-            @else
-              <div class="alert alert-success">
-                Mahasiswa ini telah disetujui untuk mendaftar program MBKM {{ data_blockchain.program }}. <br/>
-              </div>
-            @end
+            @if(status)
+            <div class="alert alert-info">
+              Program Studi {{ data.program_studi }} telah menyetujui {{ data.nama_lengkap }} untuk mendaftar program MBKM {{ data_blockchain.program }}. <br/>
+            </div>
+            @endif
               <div class="row">
                 <div class="col-md-4 col-12">
                  <div class="card">
@@ -124,13 +120,12 @@
                 </div>
                 @if(status == false)
                   <div class="col-12 d-flex justify-content-center">
-                    <form action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
+                    <form action="{{ route('sr.setujuiSRP') }}" method="POST">
                       <input type="hidden" value="{{ data_blockchain.id}}" name="id">
                       <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
-                      <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
                       <input type="hidden" value="{{ data_blockchain.program}}" name="program">
                       <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
-                      <button type="submit" onclick="return confirm('Apakah kamu yakin ?')" class="btn btn-success btn-lg me-1 mb-1" ><i class="bi bi-check"></i> Setujui</button>
+                      <button type="submit" class="btn btn-success btn-lg me-1 mb-1" onclick="return confirm('Apakah kamu yakin ?')">Setujui</button>
                     </form>
                   </div>
                 @else
@@ -149,6 +144,8 @@
 
 @section('custom-js')
 
+chartProfileVisit.render()
+    </script>
     <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="/assets/js/pages/simple-datatables.js"></script>
 @end
