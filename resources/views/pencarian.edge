@@ -19,14 +19,14 @@
           <div class="card shadow-lg">
             <div class="card-content">
               <div class="card-body">
-                <form class="form form-horizontal">
+                <form class="form form-horizontal" method="POST" action="{{ route('rekognisi.search') }}">
                   <div class="form-body">
                     <div class="row">
                       <div class="col-md-4">
                         <label for="first-name-horizontal">NIM Mahasiswa</label>
                       </div>
                       <div class="col-md-12 form-group">
-                        <input type="text" id="first-name-horizontal" class="form-control" name="fname" placeholder="Masukkan NIM Mahasiswa ...">
+                        <input type="text" id="first-name-horizontal" class="form-control" name="nim" placeholder="Masukkan NIM Mahasiswa ...">
                       </div>
                       
                       <div class="col-sm-12 d-flex justify-content-end">

@@ -52,6 +52,7 @@ export default class RegistryMBKMController {
       let status_mbkm;
       let status_pendaftaran = false;
       let tanggal;
+      let ditolak = false;
       const result2 = res2.data;
       if(result2.length == 0){ 
         status_mbkm = false
@@ -60,16 +61,20 @@ export default class RegistryMBKMController {
         if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "false") {
           status_mbkm = true
           tanggal = result2[i].Record.created_at
+        } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "denied"){
+          status_pendaftaran = false
+          ditolak = true
+          tanggal = result2[i].Record.updated_at
         } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "true"){
           status_pendaftaran = true
           tanggal = result2[i].Record.updated_at
         }
       }
       if(status_pendaftaran == true) {
-        console.log(result2)
-        return view.render('pages/mahasiswa/mbkm_new', { data_b: result2[0], status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data })
+        console.log("Hello :", result2)
+        return view.render('pages/mahasiswa/mbkm_new', { data_b: result2[0], status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data, ditolak: ditolak })
       } else {
-        return view.render('pages/mahasiswa/mbkm_new', { status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data })
+        return view.render('pages/mahasiswa/mbkm_new', { status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data, ditolak: ditolak })
       }
     } catch (e) {
       if(e.message === 'E_ROW_NOT_FOUND: Row not found') {
@@ -148,8 +153,10 @@ export default class RegistryMBKMController {
     const nim = request.input('nim')
     const id = request.input('id')
     const created_at = request.input('created_at')
+    const persetujuan = request.input('persetujuan')
     console.log("UDAH DISINI")
     try {// Load the docx file as binary content
+      if(persetujuan == 'true') {
       const content = fs.readFileSync(
         path.resolve("template_surat", "template_sru.docx"),
         "binary"
@@ -226,6 +233,28 @@ export default class RegistryMBKMController {
       } catch (e) {
         console.log(e)
         session.flash('error', e.message)
+        return response.redirect().back()
+      }
+      } else if(persetujuan == 'denied') {
+        const payload = [
+          id,
+          mitra,
+          nim,
+          "",
+          program,
+          persetujuan,
+          "false",
+          created_at
+        ];
+
+        const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/UpdateAsset", 
+          payload, {
+            headers: {
+              "X-API-Key": auth.user!.role,
+            }
+          });
+        console.log(res);
+        session.flash('success', res.data.message + " ID Transaksi Blockchain : " + res.data.idTrx)
         return response.redirect().back()
       }
 

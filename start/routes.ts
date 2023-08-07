@@ -49,4 +49,5 @@ Route.get('/dashboard', async ({ view, auth }) => {
 })
 
 Route.get('/rekognisi', 'RekognisiController.index')
-Route.get('/rekognisi/:nim', 'RekognisiController.show')
+Route.get('/rekognisi/:nim', 'RekognisiController.show').as('rekognisi.show')
+Route.post('/rekognisi','RekognisiController.search').as('rekognisi.search')

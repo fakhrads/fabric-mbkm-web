@@ -51,7 +51,9 @@
                       <div class="badge bg-success">Disetujui</div>
                     @elseif(item.persetujuan == 'false')
                       <div class="badge bg-warning">Belum Disetujui</div>
-                    @end
+                    @else
+                      <div class="badge bg-danger">Ditolak</div>
+                    @endif
                 </td>
                 <td>
                   <a href="/prodi/sr/{{ item.nim }}" class="btn btn-primary">Check</a>

@@ -24,6 +24,7 @@
         @if(flashMessages.has('success'))
           <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
         @endif
+        @if(ditolak == false)
         @if(status_pendaftaran == false)
           @if(status_mbkm == false)
             @if(status_sr)
@@ -85,6 +86,12 @@
           <div class="col-12 d-flex justify-content-center">
             <a href="https://{{ data_b.Record.file }}.ipfs.w3s.link" class="btn btn-success btn-lg me-1 mb-1" ><i class="bi bi-cloud-download-fill" target="_blank"></i> Unduh Surat</a>
           </div>
+        @end
+        @elseif(ditolak == true)
+            <div class="alert alert-danger">
+              Wakil Rektor menolak pembuatan surat rekomendasi universitas. <br>
+            </div>
+
         @end
       </div>
     </div>

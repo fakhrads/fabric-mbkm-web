@@ -20,13 +20,19 @@
         <div class="col-12 col-md-8 col-lg-6 col-xl-12">
                 <div class="card">
                   <div class="card-content">
+                  
                     <div class="card-body">
+            @if(flashMessages.has('error'))
+              <div class="alert alert-danger">Data tidak ditemukan. Hubungi admin jika ini merupakan kesalahan. Debug Error : {{ flashMessages.get('error') }}</div>
+            @else
                     <h1 class="text-center">Rekognisi Hasil Pembelajaran MBKM untuk NIM 10191116</h1>
                       <br/>
                       <br/>
                       <div class="row">
                         <div class="col">
                             <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
+                                
+                                @if(sr_prodi.length > 0)
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
                                         <div class="inner-circle"></div>
@@ -34,13 +40,33 @@
                                         <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan Prodi</p>
                                     </div>
                                 </div>
+                                @else
                                 <div class="timeline-step">
-                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2004">
-                                        <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2023-03-05</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan WR</p>
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2005">
+                                        <div class="inner-circlex"></div>
+                                        <p class="h6 mt-3 mb-1">------</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan Prodi</p>
                                     </div>
                                 </div>
+                                @end
+
+                                @if(sr_univ.length > 0)
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
+                                        <div class="inner-circle"></div>
+                                        <p class="h6 mt-3 mb-1">2023-03-01</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan MBKM</p>
+                                    </div>
+                                </div>
+                                @else
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2005">
+                                        <div class="inner-circlex"></div>
+                                        <p class="h6 mt-3 mb-1">------</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan MBKM</p>
+                                    </div>
+                                </div>
+                                @end
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2005">
                                         <div class="inner-circlex"></div>
@@ -76,8 +102,11 @@
                                 <span>
                                   @if(sr_univ[0].Record.persetujuan == 'true') 
                                     <div class="badge bg-success">Telah Disetujui</div>
+                                  @elseif(sr_univ[0].Record.persetujuan == 'denied')
+                                    <div class="badge bg-danger">Tidak Disetujui</div>
                                   @else
-                                    <div class="badge bg-info">Menunggu Disetujui</div>
+                                    <div class="badge bg-info">Menunggu Persetujuan</div>
+
                                   @end
                                 </span>
                                </div>
@@ -116,6 +145,7 @@
                     </div>
                   </div>
                 </div>
+                @end
         </div>
       </div>
     </div>

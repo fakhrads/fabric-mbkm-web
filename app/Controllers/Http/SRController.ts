@@ -22,6 +22,7 @@ export default class SRController {
       );
       let status;
       let status_pembuatan = false;
+      let ditolak = false;
       let tanggal;
       const result = res.data;
       if(result.length == 0){ 
@@ -31,12 +32,16 @@ export default class SRController {
         if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "false") {
           status = true
           tanggal = result[i].Record.created_at
+        } else if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "denied"){
+          status_pembuatan = false
+          ditolak = true
+          tanggal = result[i].Record.updated_at
         } else {
           status_pembuatan = true
           tanggal = result[i].Record.updated_at
         }
       }
-      return view.render('pages/mahasiswa/sr_new', { tanggal: tanggal, status_sr: status, status_pembuatan: status_pembuatan, data: data })
+      return view.render('pages/mahasiswa/sr_new', { tanggal: tanggal, status_sr: status, status_pembuatan: status_pembuatan, data: data, ditolak: ditolak })
     } catch (e) {
       if(e.message === 'E_ROW_NOT_FOUND: Row not found') {
         session.flash('error', 'Anda belum mengisi data diri')
@@ -75,13 +80,14 @@ export default class SRController {
     const nim = request.input('nim')
     const program = request.input('program')
     const created_at = request.input('created_at')
-
+    const persetujuan = request.input('persetujuan')
+    console.log(id, nim, program, created_at, persetujuan)
     const payload = [
       id,
       nim,
       "",
       program,
-      'true',
+      persetujuan,
       'false',
       created_at
     ]

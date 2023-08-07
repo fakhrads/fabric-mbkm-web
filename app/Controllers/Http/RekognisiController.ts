@@ -7,6 +7,12 @@ export default class RekognisiController {
     return view.render('pencarian')
   }
 
+  public async search({ request, response}: HttpContextContract) {
+    const nim = request.input('nim')
+
+    return response.redirect().toRoute('rekognisi.show', { nim: nim })
+  }
+
   public async show({ view, request, session, response}: HttpContextContract) {
     const nim = request.param('nim')
     try {

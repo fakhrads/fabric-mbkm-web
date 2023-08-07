@@ -25,6 +25,7 @@
             <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
           @endif
           <div class="row">
+          @if(ditolak == false)
           @if(status_pembuatan == false)
             @if(status_sr == false)
             <div class="alert alert-info">Silahkan pilih program MBKM yang diinginkan</div>
@@ -60,7 +61,7 @@
             </form>
             @elseif(status_sr)
               <div class="alert alert-success">
-                Pembuatan surat prodi sedang dilakukan.
+                Permintaan persetujuan prodi sedang dilakukan.
               </div>
             @end
           </div>
@@ -68,6 +69,11 @@
             <div class="alert alert-success">
               Prodi telah menyetujui pendaftaran MBKM pada tanggal {{ new Date(tanggal).getDate() }} {{ new Date(tanggal).toLocaleString('default', { month: 'long' }) }} {{ new Date(tanggal).getFullYear() }} di jam {{ new Date(tanggal).getHours() }}:{{ new Date(tanggal).getMinutes() }} WIB, silahkan masuk halaman pendaftaran MBKM.
             </div>
+          @end
+          @elseif(ditolak)
+              <div class="alert alert-danger">
+                Prodi telah menolak permintaan persetujuan kamu. Hubungi prodi jika ada kesalahan
+              </div>
           @end
         </div>
       </div>
