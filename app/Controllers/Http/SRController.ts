@@ -24,6 +24,7 @@ export default class SRController {
       let status_pembuatan = false;
       let ditolak = false;
       let tanggal;
+      let id;
       const result = res.data;
       if(result.length == 0){ 
         status = false
@@ -38,10 +39,11 @@ export default class SRController {
           tanggal = result[i].Record.updated_at
         } else if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "true" && result[i].Record.selesai == "false"){
           status_pembuatan = true
+          id = result[i].Key
           tanggal = result[i].Record.updated_at
         }
       }
-      return view.render('pages/mahasiswa/sr_new', { tanggal: tanggal, status_sr: status, status_pembuatan: status_pembuatan, data: data, ditolak: ditolak })
+      return view.render('pages/mahasiswa/sr_new', { tanggal: tanggal, status_sr: status, status_pembuatan: status_pembuatan, data: data, id: id, ditolak: ditolak })
     } catch (e) {
       if(e.message === 'E_ROW_NOT_FOUND: Row not found') {
         session.flash('error', 'Anda belum mengisi data diri')
@@ -169,29 +171,6 @@ export default class SRController {
       console.log(e)
       session.flash('error', e.message)
       return response.redirect().back()
-    }
-  }
-
-  public async riwayatSR({ view, auth }: HttpContextContract) {
-    await auth.use('web').authenticate()
-    try {
-      const data = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
-      
-      // axios
-      const payload = [ data.nim ];
-
-      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset", 
-        payload, {
-          headers: {
-            "X-API-Key": auth.user!.role,
-          }
-        }
-      );
-
-      return view.render('pages/mahasiswa/sr', { data: res.data})
-
-    } catch (e) {
-      console.log(e)
     }
   }
 
