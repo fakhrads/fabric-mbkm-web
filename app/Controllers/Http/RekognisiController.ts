@@ -34,8 +34,21 @@ export default class RekognisiController {
                 }
               }
             )
-            console.log(sr_univ.data, sr_prodi.data)
-            return view.render('rekognisi', { data_mahasiswa: data_mahasiswa, sr_prodi: sr_prodi.data, sr_univ: sr_univ.data })
+            try{
+              const kegiatan = await axios.put("http://localhost:3000/evaluate/kegiatan-channel/kegiatan-chaincode/QueryAsset", 
+                [ nim ], {
+                  headers: {
+                    "X-API-Key": "WakilRektor",
+                  }
+                }
+              )
+
+              console.log(sr_univ.data, sr_prodi.data, kegiatan.data)
+              return view.render('rekognisi', { data_mahasiswa: data_mahasiswa, sr_prodi: sr_prodi.data, sr_univ: sr_univ.data, kegiatan: kegiatan.data })
+            } catch (e) {
+              session.flash('error', e.message)
+              return view.render('rekognisi')
+            }
           } catch (e) {
             session.flash('error', e.message)
             return view.render('rekognisi')

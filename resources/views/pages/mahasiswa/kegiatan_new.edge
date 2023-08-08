@@ -1,9 +1,9 @@
 @layout('layouts/base')
 
 @set('title','MBKM Learning Recognition with Blockchain')
-@set('pageHeader','Upload Kegiatan Mahasiswa')
-@set('subTitle', 'Halaman upload kegiatan mahasiswa MBKM')
-@set('breadCum', 'Upload Kegiatan MBKM')
+@set('pageHeader','Upload Laporan Kegiatan Mahasiswa')
+@set('subTitle', 'Halaman upload laporan kegiatan mahasiswa MBKM')
+@set('breadCum', 'Upload Laporan Kegiatan MBKM')
 
 @section('custom-css')
 
@@ -26,8 +26,15 @@
             @if(flashMessages.has('success'))
               <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
             @endif
-              <form method="POST" action="{{ route('kegiatan.store') }}">
+              <form method="POST" enctype="multipart/form-data" action="{{ route('kegiatan.store') }}">
                 <div class="row">
+                @if(ditolak)
+                  <div class="col-md-12">
+                    <div class="alert alert-danger">
+                      Kamu sudah menggunggah laporan kegiatan MBKM. <br/>
+                    </div>
+                  </div>
+                @else
                   @if(data_pendaftaran.length == 0)
                   <div class="col-md-12">
                     <div class="alert alert-light-warning">
@@ -44,16 +51,7 @@
                   <div class="col-sm-6">
                     <fieldset class="form-group">
                       <label for="basicSelect">No Pendaftaran</label>
-                      <select class="form-select" name="id_pendaftaran" id="basicSelect">
-                        <option>Pilih ... </option>
-                        @each((item, index) in data_pendaftaran)
-                          @if(item.Record.selesai == 'false' && item.Record.persetujuan == 'true')
-                            <option value="{{ item.Key }}" >{{ item.Record.id }} - {{ item.Record.nim }}</option>
-                          @else 
-                            <option value="{{ item.Key }}" disabled>{{ item.Record.id }} - {{ item.Record.nim }} (Kegiatan Sudah Selesai)</option>
-                          @end
-                        @end
-                      </select>
+                      <input type="text" class="form-control" name="id_pendaftaran" value="{{ id_pendaftaran }}" readonly>
                     </fieldset>
                   </div>
 
@@ -67,35 +65,19 @@
                         value="{{ data }}"
                         class="form-control round"
                         placeholder="Rounded Input"
+                        readonly
                       />
                     </div>
                   </div>
 
-                  <div class="col-sm-6">
+
+                  <div class="col-md-12 col-12">
                     <div class="form-group">
-                      <label for="nama_kegiatan">Nama Kegiatan</label>
-                      <input
-                        type="text"
-                        id="nama_kegiatan"
-                        name="nama_kegiatan"
-                        class="form-control round"
-                        placeholder="Contoh : Belajar SQL dari dasar"
-                      />
+                      <label for="laporan" class="form-label">Laporan Kegiatan</label>
+                      <input class="form-control" name="laporan" type="file" id="laporan">
                     </div>
                   </div>
 
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="deskripsi_kegiatan">Deskripsi Kegiatan</label>
-                      <textarea
-                        type="text"
-                        id="deskripsi_kegiatan"
-                        name="deskripsi_kegiatan"
-                        class="form-control round"
-                        placeholder="Saya telah melakukan kegiatan ..."
-                      ></textarea>
-                    </div>
-                  </div>
                   <div class="col-sm-12 d-flex justify-content-end">
                     <button
                       type="submit"
@@ -109,9 +91,10 @@
                     >
                       Reset
                     </button>
-                  </div>   
-                </div>  
-              </form>   
+                  </div>  
+                  @end    
+                </div>
+              </form>  
             </div>
           </div>
         </div>

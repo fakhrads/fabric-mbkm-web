@@ -1,9 +1,9 @@
 @layout('layouts/base')
 
 @set('title','MBKM Learning Recognition with Blockchain')
-@set('pageHeader','Riwayat Permintaan Persetujuan Prodi')
-@set('subTitle', 'Halaman Riwayat Permintaan Persetujuan Prodi')
-@set('breadCum', 'Riwayat Permintaan Persetujuan Prodi')
+@set('pageHeader','Riwayat Pendaftaran')
+@set('subTitle', 'Halaman Riwayat Pendaftaran')
+@set('breadCum', 'Riwayat Pendaftaran')
 
 @section('custom-css')
 
@@ -27,33 +27,53 @@
         @if(flashMessages.has('success'))
           <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
         @endif
-        <table class="table table-striped" id="table1">
+        <table class="table table-responsive table-striped" id="table1">
           <thead>
             <tr>
               <th>NO </th>
-              <th>ID </th>
-              <th>Tanggal</th>
-              <th>Status</th>
+              <th>ID Pendaftaran MBKM</th>
+              <th>ID Persetujuan Prodi</th>
+              <th>Tanggal Pembuatan SR Universitas</th>
+              <th>Tanggal Persetujuan Prodi</th>
+              <th>Status Pembuatan SR Universitas</th>
+              <th>Status Persetujuan Prodi</th>
             </tr>
           </thead>
           <tbody>
-            @each((item, index) in data)
+            @each((item, index) in data_a)
+              @each((item2) in data_b)
+              @if(item.Record.persetujuanId == item2.Record.id)
               <tr>
                 <td>{{ index + 1 }}</td>
-                <td>{{ item.Record.id }}</td>              
+                <td>{{ item.Record.id }}</td>   
+                <td>{{ item.Record.persetujuanId }}</td>                             
                 <td>{{ new Date(item.Record.created_at).getDate() }} {{ new Date(item.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.Record.created_at).getFullYear() }} {{ new Date(item.Record.created_at).getHours() }}:{{ new Date(item.Record.created_at).getMinutes() }}</td>
+                <td>{{ new Date(item2.Record.created_at).getDate() }} {{ new Date(item2.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item2.Record.created_at).getFullYear() }} {{ new Date(item2.Record.created_at).getHours() }}:{{ new Date(item2.Record.created_at).getMinutes() }}</td>
                 <td>
                   @if(item.Record.persetujuan == 'true') 
                     <span class="badge bg-success">
-                      Disetujui
+                      Selesai
                     </span>
                   @elseif(item.Record.persetujuan == 'false')
-                    <span class="badge bg-danger">
-                      Ditolak
+                    <span class="badge bg-info">
+                      Menunggu
+                    </span>
+                  @end
+                </td>
+                <td>
+                  @if(item2.Record.persetujuan == 'true') 
+                    <span class="badge bg-success">
+                      Disetujui
+                    </span>
+                  @elseif(item2.Record.persetujuan == 'false')
+                    <span class="badge bg-info">
+                      Menunggu
                     </span>
                   @end
                 </td>
               </tr>
+              @endif
+              @end
             @end
           </tbody>
         </table>

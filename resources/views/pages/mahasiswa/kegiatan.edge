@@ -37,25 +37,33 @@
           <thead>
             <tr>
               <th>NO </th>
-              <th>ID </th>
-              <th>NO Pendaftaran </th>
-              <th>Nama Kegiatan</th>
-              <th>Deskripsi</th>
-              <th>Tanggal</th>
+              <th>ID Pendaftaran</th>
+              <th>ID Kegiatan </th>
+              <th>NIM</th>
+              <th>File</th>
+              <th>Tanggal Upload</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @each((item, index) in data)
-              <tr>
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.Record.id }}</td>
-                <td>{{ item.Record.pendaftaranId}}</td>
-                <td>{{ item.Record.nim }}</td>
-                <td>{{ item.Record.nama_kegiatan }}</td>
-                <td>{{ item.Record.deskripsi }}</td>
-                <td>{{ new Date(item.Record.created_at).getDate() }} {{ new Date(item.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.Record.created_at).getFullYear() }} {{ new Date(item.Record.created_at).getHours() }}:{{ new Date(item.Record.created_at).getMinutes() }}</td>
-              </tr>
+              @each((item2) in data_k)
+                <tr>
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.Record.id }}</td>
+                  <td>{{ item2.Record.id}}</td>
+                  <td>{{ item.Record.nim }}</td>
+                  <td>
+                    @if(item.Record.id == item2.Record.pendaftaranId)
+                      <a class="badge bg-success" href="https://{{ item.Record.file }}.ipfs.w3s.link" target="_blank">Link</a>
+                    @endif
+                  </td>
+                  <td>{{ new Date(item2.Record.created_at).getDate() }} {{ new Date(item2.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item2.Record.created_at).getFullYear() }} {{ new Date(item2.Record.created_at).getHours() }}:{{ new Date(item2.Record.created_at).getMinutes() }}</td>
+                  <td>
+                      <a href="/mahasiswa/kegiatan/new/{{ item.Record.id }}" class="btn btn-primary"><i class="bi bi-pen"></i></a>
+                  </td>
+                </tr>
+              @end
             @end
           </tbody>
         </table>

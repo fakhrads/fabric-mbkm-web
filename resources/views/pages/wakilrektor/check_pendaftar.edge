@@ -182,20 +182,6 @@
                         </div>
                       </div>
                       <hr>
-                      <button
-                        class="btn btn-primary"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseExample"
-                        aria-expanded="true"
-                        aria-controls="collapseExample"
-                      >
-                        Tutup SPTJM
-                      </button>
-                      <hr>
-                      <div id="collapseExample" class="col-md-12 col-12">
-                        <iframe style="height:500px;width:100%;"  src="/pdfview/{{ data.sptjm }}" title="description"></iframe> 
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -207,6 +193,7 @@
                     <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
                     <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
                     <input type="hidden" value="{{ data_blockchain.program}}" name="program">
+                    <input type="hidden" value="{{ data_blockchain.persetujuanId}}" name="id_persetujuan">
                     <input type="hidden" value="true" name="persetujuan">
                     <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
                     <div class="col-md-12 col-12">

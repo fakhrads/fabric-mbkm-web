@@ -23,15 +23,19 @@ export default class RegistryMBKMController {
         }
       );
       let status;
+      let id_persetujuan;
       const result = res.data;
       if(result.length == 0){ 
         status = false
       }
       for (let i = 0; i < result.length; i++) {
+        console.log(result[i].Key)
         if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "true" && result[i].Record.selesai == "false") {
           status = true
+          id_persetujuan = result[i].Key
         } else {
           status = false
+          id_persetujuan = result[i].Key
         }
       }
 
@@ -64,11 +68,13 @@ export default class RegistryMBKMController {
           tanggal = result2[i].Record.updated_at
         }
       }
+      console.log("Sampe sini : ",id_persetujuan)
       if(status_pendaftaran == true) {
         console.log("Hello :", result2)
         return view.render('pages/mahasiswa/mbkm_new', { data_b: result2[0], status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data, ditolak: ditolak })
       } else {
-        return view.render('pages/mahasiswa/mbkm_new', { status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data, ditolak: ditolak })
+        console.log(id_persetujuan)
+        return view.render('pages/mahasiswa/mbkm_new', { id_persetujuan: id_persetujuan, status_pendaftaran: status_pendaftaran, tanggal: tanggal, data_mitra: data_mitra, status_sr: status, status_mbkm: status_mbkm, data: data, ditolak: ditolak })
       }
     } catch (e) {
       if(e.message === 'E_ROW_NOT_FOUND: Row not found') {
@@ -104,18 +110,8 @@ export default class RegistryMBKMController {
     await auth.use('web').authenticate()
     
     const program = request.input('program')
-
-    const sptjm = request.file('sptjm',{
-      size: '2mb',
-      extnames: ['pdf'],
-    })
-    console.log(sptjm)
-
-    if (sptjm) {
-      await sptjm.moveToDisk('./')
-    }
-    
-    const sptjmFilename: any = sptjm?.fileName 
+    const id_persetujuan = request.input('id_persetujuan')
+     
 
     const data_mahasiswa = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
 
@@ -123,14 +119,13 @@ export default class RegistryMBKMController {
     const payload = [
         randomstring.generate(14),
         data_mahasiswa.nim,
+        id_persetujuan,
         "",
         program,
         "false",
     ];
 
     try {
-      data_mahasiswa.sptjm = sptjmFilename
-      data_mahasiswa.save()
       const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/CreateAsset", 
         payload, {
           headers: {
@@ -141,7 +136,7 @@ export default class RegistryMBKMController {
 
       console.log(res);
 
-      session.flash('success', 'Telah berhasil membuat surat rekomendasi universitas')
+      session.flash('success', res.data.message + " ID Transaksi Blockchain : " + res.data.idTrx)
       return response.redirect().back()
     } catch(e) {
       session.flash('error', e.message)
@@ -159,6 +154,7 @@ export default class RegistryMBKMController {
     const id = request.input('id')
     const created_at = request.input('created_at')
     const persetujuan = request.input('persetujuan')
+    const id_persetujuan = request.input('id_persetujuan')
 
     const sr_universitas = request.file('sru',{
       size: '2mb',
@@ -201,6 +197,7 @@ export default class RegistryMBKMController {
           const payload = [
             id,
             "",
+            id_persetujuan,
             nim,
             cid,
             program,
@@ -289,6 +286,37 @@ export default class RegistryMBKMController {
     }
   }
 
+  public async riwayatSR({ view, auth }: HttpContextContract) {
+    await auth.use('web').authenticate()
+    try {
+      const data = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
+      
+      // axios
+      const payload = [ data.nim ];
+
+      const res = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/pendaftaran-chaincode/QueryAsset", 
+        payload, {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      );
+
+      const res2 = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset", 
+        payload, {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      );
+
+      return view.render('pages/mahasiswa/sr', { data_a: res.data, data_b: res2.data })
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  
   public async update({}: HttpContextContract) {}
 
   public async destroy({}: HttpContextContract) {}
