@@ -9,7 +9,7 @@ export default class KegiatanController {
     try {
       const data_mahasiswa = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
       
-      const res = await axios.put("http://localhost:3000/evaluate/kegiatan-channel/activity-chaincode/QueryAsset",
+      const res = await axios.put("http://localhost:3000/evaluate/kegiatan-channel/kegiatan-chaincode/QueryAsset",
         [ data_mahasiswa.nim ], {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -29,7 +29,7 @@ export default class KegiatanController {
     try {
       const data_mahasiswa = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
       
-      const res = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/registry-chaincode/QueryAsset",
+      const res = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/pendaftaran-chaincode/QueryAsset",
         [ data_mahasiswa.nim ], {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -59,7 +59,7 @@ export default class KegiatanController {
         nama_kegiatan,
         deskripsi
       ]
-      const res = await axios.put("http://localhost:3000/submit/kegiatan-channel/activity-chaincode/CreateAsset",
+      const res = await axios.put("http://localhost:3000/submit/kegiatan-channel/kegiatan-chaincode/CreateAsset",
       payload, {
           headers: {
             "X-API-Key": auth.user!.role,

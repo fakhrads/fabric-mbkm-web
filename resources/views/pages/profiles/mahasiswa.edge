@@ -1,7 +1,9 @@
 @layout('layouts/base')
 
-@set('title','UNIKOM MBKM')
+@set('title','MBKM Learning Recognition with Blockchain')
 @set('pageHeader','Ubah Data Profil Mahasiswa')
+@set('subTitle', 'Halaman update data profil mahasiswa')
+@set('breadCum', 'Update Data Mahasiswa')
 
 @section('custom-css')
 @end
@@ -25,7 +27,7 @@
               @if(data.nim == null)
                 <div class="alert alert-warning">Kamu Belum Mengisi Data Mahasiswa <br/> Harap segera mengisi data mahasiswa jika ingin menggunakan platform ini!</div>
               @end
-              <form class="form" method="POST" action="{{ route('profile.updateMahasiswa') }}">
+              <form class="form" method="POST" enctype="multipart/form-data"  action="{{ route('profile.updateMahasiswa') }}">
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="form-group">
@@ -41,8 +43,44 @@
                   </div>
                   <div class="col-md-6 col-12">
                     <div class="form-group">
+                      <label for="nik">NIK</label>
+                      <input type="text" id="nik" class="form-control" @if(data) value="{{ data.nik }}" @end name="nik">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="nama_wali">Nama Wali</label>
+                      <input type="text" id="nama_wali" class="form-control" @if(data) value="{{ data.nama_wali }}" @end name="nama_wali">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="kota_domisili">Kota Domisili</label>
+                      <input type="text" id="kota_domisili" class="form-control" @if(data) value="{{ data.kota_domisili }}" @end name="kota_domisili">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="provinsi_domisili">Provinsi Domisili</label>
+                      <input type="text" id="provinsi_domisili" class="form-control" @if(data) value="{{ data.provinsi_domisili }}" @end name="provinsi_domisili">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="telepon">Telepon (Whatsapp)</label>
+                      <input type="text" id="telepon" class="form-control" @if(data) value="{{ data.telepon }}" @end name="telepon">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
                       <label for="tanggal_lahir">Tanggal Lahir</label>
                       <input type="text" id="tanggal_lahir" class="form-control" @if(data) value="{{ data.tanggal_lahir }}" @end name="tanggal_lahir">
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="tempat_lahir">Tempat Lahir</label>
+                      <input type="text" id="tempat_lahir" class="form-control" @if(data) value="{{ data.tempat_lahir }}" @end name="tempat_lahir">
                     </div>
                   </div>
                   <div class="col-md-6 col-12">
@@ -59,6 +97,16 @@
                   </div>
                   <div class="col-md-6 col-12">
                     <div class="form-group">
+                      <label for="jenjang">Jenjang</label>
+                      <select class="form-select" id="jenjang" name="jenjang" required>                       
+                        <option value="{{ data.jenjang }}">{{ data.jenjang }}</option>
+                        <option value="S1">Strata 1 (S1)</option>
+                        <option value="D3">Diploma 3 (D3)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
                       <label for="ipk">IPK</label>
                       <input type="text" id="ipk" class="form-control"  @if(data) value="{{ data.ipk }}" @end name="ipk">
                     </div>
@@ -69,6 +117,51 @@
                       <input type="text" id="jumlah_sks" class="form-control"  @if(data) value="{{ data.jumlah_sks }}" @end name="jumlah_sks">
                     </div>
                   </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="semester">Semester</label>
+                      <select class="form-select" id="semester" name="semester" required>                       
+                        <option value="{{ data.semester }}">{{ data.semester }}</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="beasiswa">Beasiswa</label>
+                      <select class="form-select" id="beasiswa" name="beasiswa" required>                       
+                        <option value="{{ data.beasiswa }}">{{ data.beasiswa }}</option>
+                        <option value="Tidak Menerima">Tidak Menerima</option>
+                        <option value="Menerima">Menerima</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="jumlah_beasiswa">Jumlah Beasiswa (Jika Menerima)</label>
+                      <input type="text" id="jumlah_beasiswa" class="form-control"  @if(data) value="{{ data.jumlah_beasiswa }}" @end name="jumlah_beasiswa">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="transkrip" class="form-label">Transkrip</label>
+                      <input class="form-control" name="transkrip" type="file" id="transkrip">
+                    </div>
+                  </div>
+                        
                   <div class="col-12 d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary me-1 mb-1">
                       Submit

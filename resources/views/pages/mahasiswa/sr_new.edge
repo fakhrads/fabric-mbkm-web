@@ -1,6 +1,6 @@
 @layout('layouts/base')
 
-@set('title','UNIKOM MBKM')
+@set('title','MBKM Learning Recognition with Blockchain')
 @set('pageHeader','Permintaan persetujuan Prodi')
 @set('subTitle', 'Halaman permintaan persetujuan Prodi')
 @set('breadCum', 'Permintaan persetujuan Prodi')
@@ -15,67 +15,77 @@
 
 @section('content')
   <section class="section">
-    <div class="card">
+    <div class="row match-height">
       <div class="col-12">
-        <div class="card-body">
-          @if(flashMessages.has('error'))
-            <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
-          @endif
-          @if(flashMessages.has('success'))
-            <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
-          @endif
-          <div class="row">
-          @if(ditolak == false)
-          @if(status_pembuatan == false)
-            @if(status_sr == false)
-            <div class="alert alert-info">Silahkan pilih program MBKM yang diinginkan</div>
-            <form action="{{ route('sr.storeMahasiswa') }}" method="post">
-              <div class="col-md-6 mb-4">
-                <label class="form-label" for="basicSelect">Program</label>
-                <fieldset class="form-group">
-                  <select class="form-select" id="basicSelect" name="program" required>
-                    <option value="magang">Magang</option>
-                  </select>
-                </fieldset>
-              </div>
-              <div class="col-md-6 mb-4">
-                <div class="form-group">
-                  <label for="nama-lengkap">NIM</label>
-                  <input type="text" id="nama-lengkap" class="form-control" value="{{ data.nim }}" name="nim" required>
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body">
+              @if(flashMessages.has('error'))
+                <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+              @endif
+              @if(flashMessages.has('success'))
+                <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+              @endif
+              @if(ditolak == false)
+              @if(status_pembuatan == false)
+                @if(status_sr == false)
+                <div class="alert alert-info">
+                  Silahkan pilih program MBKM yang diinginkan
                 </div>
-              </div>
-              <div class="col-sm-12 d-flex justify-content-end">
-                <button
-                  type="submit"
-                  class="btn btn-primary me-1 mb-1"
-                >
-                  Submit
-                </button>
-                <button
-                  type="reset"
-                  class="btn btn-light-secondary me-1 mb-1"
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
-            @elseif(status_sr)
-              <div class="alert alert-success">
-                Permintaan persetujuan prodi sedang dilakukan.
-              </div>
-            @end
-          </div>
-          @else
-            <div class="alert alert-success">
-              Prodi telah menyetujui pendaftaran MBKM pada tanggal {{ new Date(tanggal).getDate() }} {{ new Date(tanggal).toLocaleString('default', { month: 'long' }) }} {{ new Date(tanggal).getFullYear() }} di jam {{ new Date(tanggal).getHours() }}:{{ new Date(tanggal).getMinutes() }} WIB, silahkan masuk halaman pendaftaran MBKM.
+                <div class="alert alert-warning">
+                  Pastikan sudah mengisi data diri dengan benar, karena data diri yang tidak sesuai dapat membuat persetujuan ditolak.
+                </div>
+                <form action="{{ route('sr.storeMahasiswa') }}" method="post">
+                  <div class="row">
+                    <div class="col-md-6 col-12">
+                      <fieldset class="form-group">
+                        <label class="form-label" for="program">Program</label>
+                        <select class="form-select" id="program" name="program" required>
+                          <option value="magang">Magang</option>
+                          <option value="studi independen">Studi Independen</option>
+                        </select>
+                      </fieldset>
+                    </div>
+                    <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label class="form-label" for="nama-lengkap">NIM</label>
+                        <input type="text" id="nama-lengkap" class="form-control" value="{{ data.nim }}" disabled>
+                        <input type="hidden" value="{{ data.nim }}" name="nim" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 d-flex justify-content-end">
+                      <button
+                        type="submit"
+                        class="btn btn-primary me-1 mb-1"
+                      >
+                        Submit
+                      </button>
+                      <button
+                        type="reset"
+                        class="btn btn-light-secondary me-1 mb-1"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                @elseif(status_sr)
+                  <div class="alert alert-success">
+                    Permintaan persetujuan prodi sedang dilakukan.
+                  </div>
+                @end
+              @else
+                <div class="alert alert-success">
+                  Prodi telah menyetujui pendaftaran MBKM pada tanggal {{ new Date(tanggal).getDate() }} {{ new Date(tanggal).toLocaleString('default', { month: 'long' }) }} {{ new Date(tanggal).getFullYear() }} di jam {{ new Date(tanggal).getHours() }}:{{ new Date(tanggal).getMinutes() }} WIB, silahkan masuk halaman pendaftaran MBKM.
+                </div>
+              @end
+              @elseif(ditolak)
+                  <div class="alert alert-danger">
+                    Prodi telah menolak permintaan persetujuan kamu. Hubungi prodi jika ada kesalahan
+                  </div>
+              @end
             </div>
-          @end
-          @elseif(ditolak)
-              <div class="alert alert-danger">
-                Prodi telah menolak permintaan persetujuan kamu. Hubungi prodi jika ada kesalahan
-              </div>
-          @end
-        </div>
+          </div>
       </div>
     </div>
   </section>

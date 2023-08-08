@@ -13,7 +13,7 @@ export default class SRController {
       // axios
       const payload = [ data.nim ];
 
-      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/sr-chaincode/QueryAsset", 
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -56,7 +56,7 @@ export default class SRController {
   public async indexProdi({ view, auth, session }: HttpContextContract) {
     await auth.use('web').authenticate()
     try {
-      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/sr-chaincode/GetAllAssets", 
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/GetAllAssets", 
         {}, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -85,15 +85,13 @@ export default class SRController {
     const payload = [
       id,
       nim,
-      "",
       program,
       persetujuan,
-      'false',
       created_at
     ]
     
     try {
-      const res = await axios.put("http://localhost:3000/submit/prodi-channel/sr-chaincode/UpdateAsset", 
+      const res = await axios.put("http://localhost:3000/submit/prodi-channel/prodi-chaincode/UpdateAsset", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -118,15 +116,14 @@ export default class SRController {
     console.log(nim, program)
     // axios
     const payload = [
-        randomstring.generate(7),
+        randomstring.generate(14),
         nim,
-        "",
         program,
         "false",
       ];
 
     try {
-      const res = await axios.put("http://localhost:3000/submit/prodi-channel/sr-chaincode/CreateAsset", 
+      const res = await axios.put("http://localhost:3000/submit/prodi-channel/prodi-chaincode/CreateAsset", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -151,7 +148,7 @@ export default class SRController {
     try {
       const data = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
 
-      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/sr-chaincode/QueryAsset",
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset",
         [ data.nim ], {
           headers: {
             "X-API-Key": auth.user!.role,

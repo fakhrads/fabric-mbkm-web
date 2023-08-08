@@ -41,7 +41,7 @@ export default class RegistryMBKMController {
         }
       }
 
-      const res2 = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/registry-chaincode/QueryAsset", 
+      const res2 = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/pendaftaran-chaincode/QueryAsset", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -89,7 +89,7 @@ export default class RegistryMBKMController {
   public async indexWakilRektor({ auth, view, session}: HttpContextContract) {
     await auth.use('web').authenticate()
     try {
-      const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/GetAllAssets", 
+      const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/GetAllAssets", 
         {}, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -116,7 +116,7 @@ export default class RegistryMBKMController {
 
     // axios
     const payload = [
-        randomstring.generate(7),
+        randomstring.generate(14),
         mitra,
         data_mahasiswa.nim,
         "",
@@ -125,7 +125,7 @@ export default class RegistryMBKMController {
     ];
 
     try {
-      const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/CreateAsset", 
+      const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/CreateAsset", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -214,7 +214,7 @@ export default class RegistryMBKMController {
             created_at
           ];
 
-          const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/UpdateAsset", 
+          const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateAsset", 
             payload, {
               headers: {
                 "X-API-Key": auth.user!.role,
@@ -247,7 +247,7 @@ export default class RegistryMBKMController {
           created_at
         ];
 
-        const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/UpdateAsset", 
+        const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateAsset", 
           payload, {
             headers: {
               "X-API-Key": auth.user!.role,
@@ -272,7 +272,7 @@ export default class RegistryMBKMController {
     try {
       const data = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
 
-      const res = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/registry-chaincode/QueryAsset",
+      const res = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/pendaftaran-chaincode/QueryAsset",
         [ data.nim ], {
           headers: {
             "X-API-Key": auth.user!.role,

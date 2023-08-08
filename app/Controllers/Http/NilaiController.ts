@@ -10,7 +10,7 @@ export default class NilaiController {
       await ProfileMitra.query().where('user_id', auth.user!.id).firstOrFail()
 
       try {
-        const res = await axios.put("http://localhost:3000/evaluate/nilai-channel/score-chaincode/GetAllAssets", 
+        const res = await axios.put("http://localhost:3000/evaluate/nilai-channel/nilai-chaincode/GetAllAssets", 
           {}, {
             headers: {
               "X-API-Key": auth.user!.role,

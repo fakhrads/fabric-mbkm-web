@@ -1,0 +1,91 @@
+@layout('layouts/base')
+
+@set('title','MBKM Learning Recognition with Blockchain')
+@set('pageHeader','Upload Kegiatan Mahasiswa')
+@set('subTitle', 'Halaman upload kegiatan mahasiswa MBKM')
+@set('breadCum', 'Upload Kegiatan MBKM')
+
+@section('custom-css')
+
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/choices.js/public/assets/styles/choices.css"
+    />
+@end
+
+@section('content')
+  <section class="section">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body">
+            @if(flashMessages.has('error'))
+              <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+            @endif
+            @if(flashMessages.has('success'))
+              <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+            @endif
+              <form method="POST" action="{{ route('pic.mitra.store') }}">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="alert alert-light-warning">
+                      Pastikan data yang diinputkan sudah benar. <br/>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control round"
+                        placeholder="Email mitra"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-control round"
+                        placeholder="Password"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-12 d-flex justify-content-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary me-1 mb-1"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="reset"
+                      class="btn btn-light-secondary me-1 mb-1"
+                    >
+                      Reset
+                    </button>
+                  </div>   
+                  
+                </div>  
+              </form>   
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+    <script src="/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
+    <script src="/assets/static/js/pages/form-element-select.js"></script>
+@end

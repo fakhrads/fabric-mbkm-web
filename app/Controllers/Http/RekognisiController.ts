@@ -19,7 +19,7 @@ export default class RekognisiController {
       const data_mahasiswa = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
       try {
         try{
-          const sr_prodi = await axios.put("http://localhost:3000/evaluate/prodi-channel/sr-chaincode/QueryAsset", 
+          const sr_prodi = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset", 
             [ nim ], {
               headers: {
                 "X-API-Key": "WakilRektor",
@@ -27,7 +27,7 @@ export default class RekognisiController {
             }
           )
           try{  
-            const sr_univ = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/registry-chaincode/QueryAsset", 
+            const sr_univ = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/pendaftaran-chaincode/QueryAsset", 
               [ nim ], {
                 headers: {
                   "X-API-Key": "WakilRektor",

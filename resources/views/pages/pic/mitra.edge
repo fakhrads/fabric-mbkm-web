@@ -1,0 +1,72 @@
+@layout('layouts/base')
+
+@set('title','MBKM Learning Recognition with Blockchain')
+@set('pageHeader','Olah Data Mitra')
+@set('subTitle', 'Halaman pengolahan data mitra mahasiswa UNIKOM')
+@set('breadCum', 'Olah Data Mitra')
+
+@section('custom-css')
+
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+
+    <link rel="stylesheet" href="/assets/compiled/css/table-datatable.css" />
+@end
+
+@section('content')
+  <section class="section">
+    <div class="row">
+      <div class="col-12">
+        <div class="col-md-12 mb-4">
+          <a href="/pic/mitra/new" class="btn btn-primary btn-md float-end">Buat Akun Mitra Baru</a>
+        </div>
+        <br/>
+        <br/>
+        <div class="card">
+          <!-- <div class="card-header">Data Guru Yayasan</div> -->
+          <div class="card-body">
+            @if(flashMessages.has('error'))
+              <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+            @endif
+            @if(flashMessages.has('success'))
+              <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+            @endif
+            <table class="table table-striped" id="table1">
+              <thead>
+                <tr>
+                  <th>NO </th>
+                  <th>ID </th>
+                  <th>Email</th>
+                  <th>Tanggal Dibuat</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @each((item, index) in data)
+                  <tr>
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ new Date(item.createdAt).getDate() }} {{ new Date(item.createdAt).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.createdAt).getFullYear() }} {{ new Date(item.createdAt).getHours() }}:{{ new Date(item.createdAt).getMinutes() }}</td>
+                    <td>
+                      <a href="/prodi/sr/{{ item.nim }}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                  </tr>
+                @end
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/static/js/pages/simple-datatables.js"></script>
+</script>
+@end

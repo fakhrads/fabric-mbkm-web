@@ -108,6 +108,23 @@
                 <span>Olah Data Nilai</span>
             </a>
         </li>
+
+        
+        @elseif(auth.user.role == 'PIC')
+        <!-- MENU MITRA -->
+        <li class="sidebar-title">Menu PIC</li>
+
+        <li
+            @if( request.url() == '/pic/mitra') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/pic/mitra" class='sidebar-link'>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                <span>Olah Data Mitra</span>
+            </a>
+        </li>
         @end
 
         <li class="sidebar-item">

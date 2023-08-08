@@ -19,7 +19,7 @@ Route.get('/dashboard', async ({ view, auth }) => {
   
   if (auth.user?.role == 'WakilRektor') {
 
-    const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/registry-chaincode/GetAllAssets", 
+    const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/GetAllAssets", 
       {}, {
         headers: {
           "X-API-Key": auth.user!.role,
@@ -51,3 +51,6 @@ Route.get('/dashboard', async ({ view, auth }) => {
 Route.get('/rekognisi', 'RekognisiController.index')
 Route.get('/rekognisi/:nim', 'RekognisiController.show').as('rekognisi.show')
 Route.post('/rekognisi','RekognisiController.search').as('rekognisi.search')
+Route.get('/uploads/:filename', async ({ response, params }) => {
+  response.download('./', params.filename)
+})
