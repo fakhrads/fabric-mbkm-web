@@ -5,12 +5,35 @@
 @set('subTitle', 'Halaman cek data mahasiswa yang telah mendaftar program MBKM')
 @set('breadCum', 'Check Data Mahasiswa MBKM')
 
-@section('custom-css')
+@section('custom-css')    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/pdfjs-viewer.css">
     <link
       rel="stylesheet"
       href="/assets/extensions/simple-datatables/style.css"
     />
     <link rel="stylesheet" href="/assets/css/pages/simple-datatables.css" />
+        <style>
+        .pdfjs-toolbar, .pdfjs-toolbar i {
+            font-size: 14px;
+        }
+        .pdfjs-toolbar span {
+            margin-right: 0.5em;
+            margin-left: 0.5em;
+            width: 4em !important;
+            font-size: 12px;
+        }
+        .pdfjs-toolbar .btn-sm {
+            padding: 0.12rem 0.25rem;
+
+        }
+        .pdfjs-toolbar {
+            width: 100%;
+            height: auto;
+            background: #ddd;
+            z-index: 100;
+        }
+    </style>
 @end
 
 @section('content')
@@ -46,6 +69,7 @@
                       <div class="d-flex flex-column align-items-center text-center">
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-sm" width="250">
                       </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -72,10 +96,37 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Tanggal Lahir</h6>
+                          <h6 class="mb-0">Nomor Telepon</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{ data.tanggal_lahir }}
+                          {{ data.telepon }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Nama Wali</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.nama_wali }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Tempat, Tanggal Lahir</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.tempat_lahir }}, {{ data.tanggal_lahir }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Domisili</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.kota_domisili }}, {{ data.provinsi_domisili }}
                         </div>
                       </div>
                       <hr>
@@ -99,6 +150,15 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
+                          <h6 class="mb-0">Jenjang</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.jenjang }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
                           <h6 class="mb-0">Jumlah SKS </h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
@@ -115,6 +175,47 @@
                         </div>
                       </div>
                       <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Semester </h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.semester }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Beasiswa </h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.beasiswa }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Jumlah Beasiswa </h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.jumlah_beasiswa }}
+                        </div>
+                      </div>
+                      <hr>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample"
+                        aria-expanded="true"
+                        aria-controls="collapseExample"
+                      >
+                        Tutup Transkrip
+                      </button>
+                      <hr>
+                      <div id="collapseExample" class="col-md-12 col-12">
+                        <iframe style="height:500px;width:100%;"  src="/pdfview/{{ data.transkrip }}" title="description"></iframe> 
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -152,9 +253,14 @@
   </section>
 @end
 
-@section('custom-js')
-
-chartProfileVisit.render()
+@section('custom-js')    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="/assets/pdfjs-viewer.js"></script>
+    <script>
+    // Let's initialize the PDFjs library
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
     </script>
     <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="/assets/js/pages/simple-datatables.js"></script>

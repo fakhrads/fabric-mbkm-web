@@ -37,34 +37,19 @@
                 </div>
                 <form action="{{ route('sr.storeMahasiswa') }}" method="post">
                   <div class="row">
-                    <div class="col-md-6 col-12">
-                      <fieldset class="form-group">
-                        <label class="form-label" for="program">Program</label>
-                        <select class="form-select" id="program" name="program" required>
-                          <option value="magang">Magang</option>
-                          <option value="studi independen">Studi Independen</option>
-                        </select>
-                      </fieldset>
-                    </div>
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-12 col-12">
                       <div class="form-group">
                         <label class="form-label" for="nama-lengkap">NIM</label>
                         <input type="text" id="nama-lengkap" class="form-control" value="{{ data.nim }}" disabled>
                         <input type="hidden" value="{{ data.nim }}" name="nim" required>
                       </div>
                     </div>
-                    <div class="col-sm-12 d-flex justify-content-end">
+                    <div class="col-sm-12 d-flex justify-content-center">
                       <button
                         type="submit"
-                        class="btn btn-primary me-1 mb-1"
+                        class="btn btn-lg btn-primary me-1 mb-1"
                       >
-                        Submit
-                      </button>
-                      <button
-                        type="reset"
-                        class="btn btn-light-secondary me-1 mb-1"
-                      >
-                        Reset
+                        Ajukan
                       </button>
                     </div>
                   </div>

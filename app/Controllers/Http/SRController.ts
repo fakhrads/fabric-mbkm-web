@@ -29,14 +29,14 @@ export default class SRController {
         status = false
       }
       for (let i = 0; i < result.length; i++) {
-        if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "false") {
+        if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "false" && result[i].Record.selesai == "false") {
           status = true
           tanggal = result[i].Record.created_at
-        } else if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "denied"){
+        } else if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "denied" && result[i].Record.selesai == "true"){
           status_pembuatan = false
           ditolak = true
           tanggal = result[i].Record.updated_at
-        } else {
+        } else if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "true" && result[i].Record.selesai == "false"){
           status_pembuatan = true
           tanggal = result[i].Record.updated_at
         }
@@ -78,15 +78,19 @@ export default class SRController {
 
     const id = request.input('id')
     const nim = request.input('nim')
-    const program = request.input('program')
     const created_at = request.input('created_at')
     const persetujuan = request.input('persetujuan')
-    console.log(id, nim, program, created_at, persetujuan)
+
+    let selesai = "false"
+    if (persetujuan == "denied") {
+      selesai = "true"
+    }
+    console.log("DEBUG : " + selesai)
     const payload = [
       id,
       nim,
-      program,
       persetujuan,
+      selesai,
       created_at
     ]
     
@@ -100,7 +104,7 @@ export default class SRController {
 
       console.log(res);
     
-      session.flash('success', 'Telah berhasil menyetujui surat rekomendasi')
+      session.flash('success', res.data.message + " ID Transaksi Blockchain : " + res.data.idTrx)
       return response.redirect().back()
     } catch(e) {
       console.log(e)
@@ -112,13 +116,11 @@ export default class SRController {
   public async storeMahasiswa({ session, request, auth, response }: HttpContextContract) {
     await auth.use('web').authenticate()
     const nim = request.input('nim')
-    const program = request.input('program')
-    console.log(nim, program)
+    console.log(nim)
     // axios
     const payload = [
         randomstring.generate(14),
         nim,
-        program,
         "false",
       ];
 
@@ -170,7 +172,28 @@ export default class SRController {
     }
   }
 
-  public async show({}: HttpContextContract) {}
+  public async riwayatSR({ view, auth }: HttpContextContract) {
+    await auth.use('web').authenticate()
+    try {
+      const data = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
+      
+      // axios
+      const payload = [ data.nim ];
+
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset", 
+        payload, {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      );
+
+      return view.render('pages/mahasiswa/sr', { data: res.data})
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   public async edit({}: HttpContextContract) {}
 

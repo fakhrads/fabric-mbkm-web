@@ -17,12 +17,12 @@
         <li class="sidebar-title">Menu Mahasiswa</li>
 
         <li
-            @if( request.url() == '/mahasiswa/sr') 
+            @if( request.url() == '/mahasiswa/sr/new') 
                 class="sidebar-item active">
             @else 
                 class="sidebar-item">
             @end
-            <a href="/mahasiswa/sr" class='sidebar-link'>
+            <a href="/mahasiswa/sr/new" class='sidebar-link'>
                 <i class="bi bi-clipboard2-check-fill"></i>
                 <span>Permintaan Persetujuan Prodi</span>
             </a>
@@ -37,6 +37,18 @@
             <a href="/mahasiswa/mbkm" class='sidebar-link'>
                 <i class="bi bi-file-earmark-fill"></i>
                 <span>Pembuatan Surat Universitas</span>
+            </a>
+        </li>
+
+        <li
+            @if( request.url() == '/mahasiswa/sr') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/mahasiswa/sr" class='sidebar-link'>
+                <i class="bi bi-clock-fill"></i>
+                <span>Riwayat Permintaan Persetujuan Prodi</span>
             </a>
         </li>
 

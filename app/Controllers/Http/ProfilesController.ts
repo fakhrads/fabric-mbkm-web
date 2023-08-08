@@ -55,7 +55,9 @@ export default class ProfilesController {
     if (transkrip) {
       await transkrip.moveToDisk('./')
     }
-    const fileName: any = new Date().getTime().toString()+ '.' + transkrip?.subtype 
+    
+    const fileName: any = transkrip?.fileName 
+
     console.log(nama, nim, fakultas, prodi, ipk, tanggal_lahir, jumlah_sks, semester, fileName)
     try {
       const d = await ProfileMahasiswa.findByOrFail('user_id', auth.user!.id)

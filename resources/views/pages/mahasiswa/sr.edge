@@ -1,0 +1,72 @@
+@layout('layouts/base')
+
+@set('title','MBKM Learning Recognition with Blockchain')
+@set('pageHeader','Riwayat Permintaan Persetujuan Prodi')
+@set('subTitle', 'Halaman Riwayat Permintaan Persetujuan Prodi')
+@set('breadCum', 'Riwayat Permintaan Persetujuan Prodi')
+
+@section('custom-css')
+
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+
+    <link rel="stylesheet" href="/assets/compiled/css/table-datatable.css" />
+@end
+
+@section('content')
+  <section class="section">
+  <div class="row">
+    <div class="card">
+      <!-- <div class="card-header">Data Guru Yayasan</div> -->
+      <div class="card-body">
+        @if(flashMessages.has('error'))
+          <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+        @endif
+        @if(flashMessages.has('success'))
+          <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+        @endif
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <th>NO </th>
+              <th>ID </th>
+              <th>Tanggal</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each((item, index) in data)
+              <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.Record.id }}</td>              
+                <td>{{ new Date(item.Record.created_at).getDate() }} {{ new Date(item.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.Record.created_at).getFullYear() }} {{ new Date(item.Record.created_at).getHours() }}:{{ new Date(item.Record.created_at).getMinutes() }}</td>
+                <td>
+                  @if(item.Record.persetujuan == 'true') 
+                    <span class="badge bg-success">
+                      Disetujui
+                    </span>
+                  @elseif(item.Record.persetujuan == 'false')
+                    <span class="badge bg-danger">
+                      Ditolak
+                    </span>
+                  @end
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+        </div>
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/static/js/pages/simple-datatables.js"></script>
+</script>
+@end

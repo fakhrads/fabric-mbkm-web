@@ -40,7 +40,7 @@
               </div>
             @else
               <div class="alert alert-success">
-                Mahasiswa ini telah disetujui untuk mendaftar program MBKM {{ data_blockchain.program }}. <br/>
+                Mahasiswa ini telah dibuatkan surat rekomendasi universitas dan SPTJM untuk mendaftar program MBKM {{ data_blockchain.program }} di platform MBKM Kemendikbudristek. <br/>
               </div>
             @end
               <div class="row">
@@ -76,10 +76,37 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Tanggal Lahir</h6>
+                          <h6 class="mb-0">Nomor Telepon</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{ data.tanggal_lahir }}
+                          {{ data.telepon }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Nama Wali</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.nama_wali }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Tempat, Tanggal Lahir</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.tempat_lahir }}, {{ data.tanggal_lahir }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Domisili</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.kota_domisili }}, {{ data.provinsi_domisili }}
                         </div>
                       </div>
                       <hr>
@@ -103,6 +130,15 @@
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
+                          <h6 class="mb-0">Jenjang</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.jenjang }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
                           <h6 class="mb-0">Jumlah SKS </h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
@@ -119,30 +155,88 @@
                         </div>
                       </div>
                       <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Semester </h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.semester }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Beasiswa </h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.beasiswa }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Jumlah Beasiswa </h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ data.jumlah_beasiswa }}
+                        </div>
+                      </div>
+                      <hr>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample"
+                        aria-expanded="true"
+                        aria-controls="collapseExample"
+                      >
+                        Tutup SPTJM
+                      </button>
+                      <hr>
+                      <div id="collapseExample" class="col-md-12 col-12">
+                        <iframe style="height:500px;width:100%;"  src="/pdfview/{{ data.sptjm }}" title="description"></iframe> 
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div class="col-md-12 col-12">
+                  <hr>
                 @if(status == false)
-                  <div class="col-12 d-flex justify-content-center">
-                    <form action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
-                      <input type="hidden" value="{{ data_blockchain.id}}" name="id">
-                      <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
-                      <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
-                      <input type="hidden" value="{{ data_blockchain.program}}" name="program">
-                      <input type="hidden" value="true" name="persetujuan">
-                      <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
+                  <form class="form" enctype="multipart/form-data" action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
+                    <input type="hidden" value="{{ data_blockchain.id}}" name="id">
+                    <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
+                    <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
+                    <input type="hidden" value="{{ data_blockchain.program}}" name="program">
+                    <input type="hidden" value="true" name="persetujuan">
+                    <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
+                    <div class="col-md-12 col-12">
+                      <div class="form-group">
+                        <label for="sru" class="form-label">Surat Rekomendasi Universitas</label>
+                        <input class="form-control" name="sru" type="file" id="sru">
+                      </div>
+                    </div>
+                    <div class="col-md-12 col-12">
+                      <div class="form-group">
+                        <label for="sptjm" class="form-label">SPTJM</label>
+                        <input class="form-control" name="sptjm" type="file" id="sptjm">
+                      </div>
+                    </div>
+                    <div class="col-sm-12 d-flex justify-content-center">
                       <button type="submit" onclick="return confirm('Apakah kamu yakin ?')" class="btn btn-success btn-lg me-1 mb-1" ><i class="bi bi-check"></i> Setujui</button>
-                    </form>
+                    </div>
+                  </form>
                     
-                    
-                    <form action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
+                    <hr>
+                    <form class="form" action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
                       <input type="hidden" value="{{ data_blockchain.id}}" name="id">
                       <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
                       <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
                       <input type="hidden" value="{{ data_blockchain.program}}" name="program">
                       <input type="hidden" value="denied" name="persetujuan">
                       <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
-                      <button type="submit" onclick="return confirm('Apakah kamu yakin ?')" class="btn btn-danger btn-lg me-1 mb-1" ><i class="bi bi-check"></i> Tolak</button>
+                      <div class="col-sm-12 d-flex justify-content-center">
+                        <button type="submit" onclick="return confirm('Apakah kamu yakin ?')" class="btn btn-danger btn-lg me-1 mb-1" ><i class="bi bi-check"></i> Tolak</button>
+                      </div>
                     </form>
                   </div>
                 @else
@@ -150,6 +244,7 @@
                     <button type="submit" class="btn btn-success btn-lg me-1 mb-1" disabled><i class="bi bi-check"></i> Mahasiswa ini telah disetujui untuk mendaftar program MBKM {{ data_blockchain.program }}</button>
                   </div>
                 @end
+                </div>
               </div>
             </div>
           </div>

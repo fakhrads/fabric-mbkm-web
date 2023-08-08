@@ -5,12 +5,6 @@ import ProfileMahasiswa from '../../Models/ProfileMahasiswa'
 import ProfileMitra from '../../Models/ProfileMitra'
 const randomstring = require("randomstring");
 
-const PizZip = require("pizzip");
-const Docxtemplater = require("docxtemplater");
-
-const fs = require("fs");
-const path = require("path");
-
 export default class RegistryMBKMController {
   public async indexMahasiswa({auth, session, response, view}: HttpContextContract) {
     await auth.use('web').authenticate()
@@ -21,7 +15,7 @@ export default class RegistryMBKMController {
       // axios
       const payload = [ data.nim ];
 
-      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/sr-chaincode/QueryAsset", 
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,
@@ -34,7 +28,7 @@ export default class RegistryMBKMController {
         status = false
       }
       for (let i = 0; i < result.length; i++) {
-        if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "true") {
+        if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "true" && result[i].Record.selesai == "false") {
           status = true
         } else {
           status = false
@@ -109,22 +103,34 @@ export default class RegistryMBKMController {
   public async storeMahasiswa({ session, request, response, auth }: HttpContextContract) {
     await auth.use('web').authenticate()
     
-    const mitra = request.input('mitra')
     const program = request.input('program')
+
+    const sptjm = request.file('sptjm',{
+      size: '2mb',
+      extnames: ['pdf'],
+    })
+    console.log(sptjm)
+
+    if (sptjm) {
+      await sptjm.moveToDisk('./')
+    }
+    
+    const sptjmFilename: any = sptjm?.fileName 
 
     const data_mahasiswa = await ProfileMahasiswa.query().where('user_id', auth.user!.id).firstOrFail()
 
     // axios
     const payload = [
         randomstring.generate(14),
-        mitra,
         data_mahasiswa.nim,
         "",
         program,
-        "false"
+        "false",
     ];
 
     try {
+      data_mahasiswa.sptjm = sptjmFilename
+      data_mahasiswa.save()
       const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/CreateAsset", 
         payload, {
           headers: {
@@ -148,64 +154,53 @@ export default class RegistryMBKMController {
   public async setujuiMBKM({ auth, session, response, request }: HttpContextContract) {
     await auth.use('web').authenticate()
     
-    const mitra = request.input('mitra')
     const program = request.input('program')
     const nim = request.input('nim')
     const id = request.input('id')
     const created_at = request.input('created_at')
     const persetujuan = request.input('persetujuan')
-    console.log("UDAH DISINI")
+
+    const sr_universitas = request.file('sru',{
+      size: '2mb',
+      extnames: ['pdf'],
+    })
+    console.log(sr_universitas)
+
+    if (sr_universitas) {
+      console.log("DEBUG: sr_universitas")
+      await sr_universitas.moveToDisk('./')
+    }
+    
+    const sruFileName: any = sr_universitas?.fileName 
+
+    const sptjm = request.file('sptjm',{
+      size: '2mb',
+      extnames: ['pdf'],
+    })
+    console.log(sptjm)
+
+    if (sptjm) {
+      console.log("DEBUG: sptjm")
+      await sptjm.moveToDisk('./')
+    }
+    
+    const sptjmFileName: any = sptjm?.fileName 
+
+    console.log("DEBUG:", program, nim, id, created_at, persetujuan)
     try {// Load the docx file as binary content
       if(persetujuan == 'true') {
-      const content = fs.readFileSync(
-        path.resolve("template_surat", "template_sru.docx"),
-        "binary"
-      );
-      const zip = new PizZip(content);
-
-      const doc = new Docxtemplater(zip, {
-        paragraphLoop: true,
-        linebreaks: true,
-      });
       console.log("Udah disini")
       try{
-        const mahasiswa = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
-        // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
-        doc.render({
-          nama_lengkap: mahasiswa.nama_lengkap,
-          username: mahasiswa.nim,
-          semester: "8",
-          ipk: mahasiswa.ipk,
-          sks: mahasiswa.jumlah_sks
-        });
-      
-        const buf = doc.getZip().generate({
-          type: "nodebuffer",
-          // compression: DEFLATE adds a compression step.
-          // For a 50MB output document, expect 500ms additional CPU time
-          compression: "DEFLATE",
-        });
-      
-        // buf is a nodejs Buffer, you can either write it to a
-        // file or res.send it with express for example.
-        try {
-          fs.writeFileSync(path.resolve("surat", "output.docx"), buf);
-        
-        } catch (e) {
-
-          session.flash('error', e.message)
-          return response.redirect().back()
-        }
-        
+        // const mahasiswa = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM4ZjNjRjZiMTFGNjBiRjJlODg5ZjEzODljRjI4MjQ0QjZDQkFBNTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTAxODY3NzQ0NjEsIm5hbWUiOiJza3JpcHNpIn0.4wGz4ChtMzoR-86ITyh3jcI3u13K4jhu9J3f203WIGE"
         const storage = new Web3Storage({ token})
-        const pathFiles = await getFilesFromPath("surat/output.docx")
+        const pathFiles = await getFilesFromPath(["storage/uploads/" + sptjmFileName, "storage/uploads/" + sruFileName])
         const cid = await storage.put(pathFiles)
         console.log('Content added with CID:', cid)
         try {
           const payload = [
             id,
-            mitra,
+            "",
             nim,
             cid,
             program,
@@ -238,7 +233,7 @@ export default class RegistryMBKMController {
       } else if(persetujuan == 'denied') {
         const payload = [
           id,
-          mitra,
+          "",
           nim,
           "",
           program,

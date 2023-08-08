@@ -101,11 +101,11 @@
                                <div class="tracking-content">Pembuatan Surat Rekomendasi Universitas.
                                 <span>
                                   @if(sr_univ[0].Record.persetujuan == 'true') 
-                                    <div class="badge bg-success">Telah Disetujui</div>
+                                    <div class="badge bg-success">Telah Dibuat</div>
                                   @elseif(sr_univ[0].Record.persetujuan == 'denied')
                                     <div class="badge bg-danger">Tidak Disetujui</div>
                                   @else
-                                    <div class="badge bg-info">Menunggu Persetujuan</div>
+                                    <div class="badge bg-info">Menunggu Pembuatan</div>
 
                                   @end
                                 </span>
@@ -138,7 +138,7 @@
                           NIM : {{ data_mahasiswa.nim }} <br/>
                           Prodi : {{ data_mahasiswa.program_studi }} <br/>
                           Fakultas : {{ data_mahasiswa.fakultas }}<br/>
-                          Semester : 8 <br/>
+                          Semester : {{ data_mahasiswa.semester }} <br/>
                           SKS : {{ data_mahasiswa.jumlah_sks }} <br/>
                         </div>
                       </div>

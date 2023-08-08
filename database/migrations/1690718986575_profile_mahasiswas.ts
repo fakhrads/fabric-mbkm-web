@@ -27,6 +27,7 @@ export default class extends BaseSchema {
       table.string("semester", 100).notNullable()
       table.string("ipk", 100).notNullable()
       table.string("transkrip", 100).nullable()
+      table.string("sptjm", 100).nullable()
       table.string("beasiswa", 100).nullable()
       table.string("jumlah_beasiswa", 100).nullable()
       /**

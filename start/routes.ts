@@ -54,3 +54,7 @@ Route.post('/rekognisi','RekognisiController.search').as('rekognisi.search')
 Route.get('/uploads/:filename', async ({ response, params }) => {
   response.download('./', params.filename)
 })
+
+Route.get('/pdfview/:filename', async ({ view, params }) => {
+  return view.render('pdf', { filename: params.filename })
+})

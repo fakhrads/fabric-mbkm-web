@@ -28,7 +28,7 @@
         @if(status_pendaftaran == false)
           @if(status_mbkm == false)
             @if(status_sr)
-              <form action="{{ route('mbkm.storeMahasiswa') }}" method="post">
+              <form action="{{ route('mbkm.storeMahasiswa') }}" enctype="multipart/form-data" method="post">
                 <div class="col-md-12">
                   <div class="col-md-12 mb-4">
                     <label class="form-label" for="basicSelect">Program</label>
@@ -39,17 +39,14 @@
                       </select>
                     </fieldset>
                   </div>
-                  <div class="col-md-12 mb-4">
-                    <label class="form-label" for="basicSelect">Mitra</label>
-                    <fieldset class="form-group">
-                      <select class="form-select" id="basicSelect" name="mitra" required>
-                        <option>Pilih Mitra...</option>
-                        @each(item in data_mitra)
-                          <option value="{{ item.kode_mitra }}">{{ item.nama_mitra }}</option>
-                        @end
-                      </select>
-                    </fieldset>
+                  
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="sptjm" class="form-label">Upload SPTJM</label>
+                      <input class="form-control" name="sptjm" type="file" id="sptjm">
+                    </div>
                   </div>
+
                   <div class="col-sm-12 d-flex justify-content-end">
                     <button
                       type="submit"
@@ -79,12 +76,13 @@
           @end
         @else
           <div class="alert alert-success">
-            Pembuatan surat rekomendasi universitas sudah di setujui. <br>
+            Pembuatan surat rekomendasi universitas beserta penandatangan SPTJM sudah selesai dilakukan. 
+            <br>Silahkan ke sekretariat prodi {{ data.program_studi }} untuk mengambil salinan asli.<br>
             Tanggal pembuatan : {{ new Date(tanggal).getDate() }} {{ new Date(tanggal).toLocaleString('default', { month: 'long' }) }} {{ new Date(tanggal).getFullYear() }} di jam {{ new Date(tanggal).getHours() }}:{{ new Date(tanggal).getMinutes() }} WIB
           </div>
           <br/>
           <div class="col-12 d-flex justify-content-center">
-            <a href="https://{{ data_b.Record.file }}.ipfs.w3s.link" class="btn btn-success btn-lg me-1 mb-1" ><i class="bi bi-cloud-download-fill" target="_blank"></i> Unduh Surat</a>
+            <a href="https://{{ data_b.Record.file }}.ipfs.w3s.link" class="btn btn-success btn-lg me-1 mb-1" target="_blank"><i class="bi bi-cloud-download-fill"></i> Unduh Surat</a>
           </div>
         @end
         @elseif(ditolak == true)

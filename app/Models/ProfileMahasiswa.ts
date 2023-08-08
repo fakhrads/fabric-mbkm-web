@@ -61,6 +61,9 @@ export default class ProfileMahasiswa extends BaseModel {
   public transkrip: string | undefined
 
   @column()
+  public sptjm: string | undefined
+
+  @column()
   public beasiswa: string | undefined
 
   @column()
