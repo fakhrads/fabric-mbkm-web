@@ -28,6 +28,7 @@
                 <div class="alert alert-warning">Kamu Belum Mengisi Data Mahasiswa <br/> Harap segera mengisi data mahasiswa jika ingin menggunakan platform ini!</div>
               @end
               <form class="form" method="POST" enctype="multipart/form-data"  action="{{ route('profile.updateMahasiswa') }}">
+                {{ csrfField() }}
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="form-group">

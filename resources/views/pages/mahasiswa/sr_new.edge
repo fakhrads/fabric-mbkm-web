@@ -36,6 +36,7 @@
                   Pastikan sudah mengisi data diri dengan benar, karena data diri yang tidak sesuai dapat membuat persetujuan ditolak.
                 </div>
                 <form action="{{ route('sr.storeMahasiswa') }}" method="post">
+                  {{ csrfField() }}
                   <div class="row">
                     <div class="col-md-12 col-12">
                       <div class="form-group">

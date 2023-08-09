@@ -82,6 +82,7 @@
           <div class="card-content">
             <div class="card-body">
               <form method="POST" action="{{ route('pic.mitra.password') }}">
+                {{ csrfField() }}
                 <div class="row">
                   <div class="col-md-12">
                     <div class="alert alert-light-warning">
@@ -136,6 +137,7 @@
           <div class="card-content">
             <div class="card-body">
               <form method="POST" action="{{ route('pic.mitra.updateMitra') }}">
+                {{ csrfField() }}
                 <div class="row">
                   <div class="col-md-12">
                     <div class="alert alert-light-warning">

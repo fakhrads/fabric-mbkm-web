@@ -189,6 +189,7 @@
                   <hr>
                 @if(status == false)
                   <form class="form" enctype="multipart/form-data" action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
+                    {{ csrfField() }}
                     <input type="hidden" value="{{ data_blockchain.id}}" name="id">
                     <input type="hidden" value="true" name="persetujuan">
                     <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">

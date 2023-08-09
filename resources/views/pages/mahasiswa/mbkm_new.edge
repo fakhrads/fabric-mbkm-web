@@ -29,6 +29,7 @@
           @if(status_mbkm == false)
             @if(status_sr)
               <form action="{{ route('mbkm.storeMahasiswa') }}" enctype="multipart/form-data" method="post">
+                {{ csrfField() }}
                 <div class="col-md-12">
 
                   <div class="col-md-12 col-12">
