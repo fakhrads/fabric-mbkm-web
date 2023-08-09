@@ -4,11 +4,6 @@
 @set('pageHeader','Pembuatan SR Prodi')
 
 @section('custom-css')
-    <link
-      rel="stylesheet"
-      href="/asset/extensions/simple-datatables/style.css"
-    />
-    <link rel="stylesheet" href="/asset/css/pages/simple-datatables.css" />
 @end
 
 @section('content')
@@ -20,13 +15,14 @@
             <div class="card-content">
               <div class="card-body">
                 <form class="form form-horizontal" method="POST" action="{{ route('rekognisi.search') }}">
+                  {{ csrfField() }}
                   <div class="form-body">
                     <div class="row">
                       <div class="col-md-4">
                         <label for="first-name-horizontal">NIM Mahasiswa</label>
                       </div>
                       <div class="col-md-12 form-group">
-                        <input type="text" id="first-name-horizontal" class="form-control" name="nim" placeholder="Masukkan NIM Mahasiswa ...">
+                        <input type="text" id="first-name-horizontal" class="form-control" name="nim" placeholder="Masukkan NIM Mahasiswa ..." required>
                       </div>
                       
                       <div class="col-sm-12 d-flex justify-content-end">
@@ -50,7 +46,4 @@
 @end
 
 @section('custom-js')
-
-    <script src="/asset/extensions/simple-datatables/umd/simple-datatables.js"></script>
-    <script src="/asset/js/pages/simple-datatables.js"></script>
 @end
