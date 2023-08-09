@@ -25,6 +25,9 @@ export default class KegiatanController {
           }
         }
       )
+      if(res.data.length == 0) {
+        res.data = [{Record: {id: 0, nama: "Tidak ada data"}}]
+      }
 
       return view.render('pages/mahasiswa/kegiatan', { data: res2.data, data_k: res.data })
     } catch(e) {
@@ -104,6 +107,14 @@ export default class KegiatanController {
         ]
         const res = await axios.put("http://localhost:3000/submit/kegiatan-channel/kegiatan-chaincode/CreateAsset",
         payload, {
+            headers: {
+              "X-API-Key": auth.user!.role,
+            }
+          }
+        )
+
+        await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateStatusLaporan",
+        [ id_pendaftaran, "true" ], {
             headers: {
               "X-API-Key": auth.user!.role,
             }

@@ -37,6 +37,8 @@
               <th>Tanggal Persetujuan Prodi</th>
               <th>Status Pembuatan SR Universitas</th>
               <th>Status Persetujuan Prodi</th>
+              <th>Status Upload Laporan</th>
+              <th>Status MBKM</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +70,28 @@
                   @elseif(item2.Record.persetujuan == 'false')
                     <span class="badge bg-info">
                       Menunggu
+                    </span>
+                  @end
+                </td>
+                <td>
+                  @if(item.Record.selesai_laporan == 'true') 
+                    <span class="badge bg-success">
+                      Selesai
+                    </span>
+                  @elseif(item.Record.selesai_laporan == 'false')
+                    <span class="badge bg-info">
+                      Belum Selesai
+                    </span>
+                  @end
+                </td>
+                <td>
+                  @if(item.Record.selesai == 'true') 
+                    <span class="badge bg-success">
+                      Selesai
+                    </span>
+                  @elseif(item.Record.selesai == 'false')
+                    <span class="badge bg-info">
+                      Belum Selesai
                     </span>
                   @end
                 </td>

@@ -106,6 +106,26 @@ export default class RegistryMBKMController {
     }
   }
 
+  public async indexPIC({ auth, view, session}: HttpContextContract) {
+    await auth.use('web').authenticate()
+    try {
+      const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/GetAllAssets", 
+        {}, {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      );
+      const result = res.data;
+      console.log(result)
+      return view.render('pages/pic/pendaftaran', { data: result })
+    } catch (e) {
+      console.log(e)
+      session.flash('error', e.message)
+      return view.render('pages/pic/pendaftaran')
+    }
+  }
+
   public async storeMahasiswa({ session, request, response, auth }: HttpContextContract) {
     await auth.use('web').authenticate()
     
@@ -119,6 +139,7 @@ export default class RegistryMBKMController {
     const payload = [
         randomstring.generate(14),
         data_mahasiswa.nim,
+        data_mahasiswa.nama_lengkap,
         id_persetujuan,
         "",
         program,
@@ -149,12 +170,8 @@ export default class RegistryMBKMController {
   public async setujuiMBKM({ auth, session, response, request }: HttpContextContract) {
     await auth.use('web').authenticate()
     
-    const program = request.input('program')
-    const nim = request.input('nim')
     const id = request.input('id')
-    const created_at = request.input('created_at')
     const persetujuan = request.input('persetujuan')
-    const id_persetujuan = request.input('id_persetujuan')
 
     const sr_universitas = request.file('sru',{
       size: '2mb',
@@ -182,7 +199,6 @@ export default class RegistryMBKMController {
     
     const sptjmFileName: any = sptjm?.fileName 
 
-    console.log("DEBUG:", program, nim, id, created_at, persetujuan)
     try {// Load the docx file as binary content
       if(persetujuan == 'true') {
       console.log("Udah disini")
@@ -196,17 +212,11 @@ export default class RegistryMBKMController {
         try {
           const payload = [
             id,
-            "",
-            id_persetujuan,
-            nim,
-            cid,
-            program,
-            "true",
-            "false",
-            created_at
+            persetujuan,
+            cid
           ];
 
-          const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateAsset", 
+          const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateStatus", 
             payload, {
               headers: {
                 "X-API-Key": auth.user!.role,
@@ -230,23 +240,19 @@ export default class RegistryMBKMController {
       } else if(persetujuan == 'denied') {
         const payload = [
           id,
-          "",
-          nim,
-          "",
-          program,
           persetujuan,
-          "false",
-          created_at
+          ""
+
         ];
 
-        const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateAsset", 
+        const res = await axios.put("http://localhost:3000/submit/pendaftaran-channel/pendaftaran-chaincode/UpdateStatus", 
           payload, {
             headers: {
               "X-API-Key": auth.user!.role,
             }
           });
         console.log(res);
-        session.flash('success', res.data.message + " ID Transaksi Blockchain : " + res.data.idTrx)
+        session.flash('success', "Pembuatan Surat telah ditolak, ID Transaksi Blockchain : " + res.data.idTrx)
         return response.redirect().back()
       }
 

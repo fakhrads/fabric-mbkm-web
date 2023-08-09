@@ -223,19 +223,13 @@
                   <div class="col-12 d-flex justify-content-center">
                     <form action="{{ route('sr.setujuiSRP') }}" method="POST">
                       <input type="hidden" value="{{ data_blockchain.id}}" name="id">
-                      <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
-                      <input type="hidden" value="{{ data_blockchain.program}}" name="program">
                       <input type="hidden" value="true" name="persetujuan">
-                      <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
                       <button type="submit" class="btn btn-success btn-lg me-1 mb-1" onclick="return confirm('Apakah kamu yakin ?')">Setujui</button>
                     </form>
                     
                     <form action="{{ route('sr.setujuiSRP') }}" method="POST">
                       <input type="hidden" value="{{ data_blockchain.id}}" name="id">
-                      <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
-                      <input type="hidden" value="{{ data_blockchain.program}}" name="program">
                       <input type="hidden" value="denied" name="persetujuan">
-                      <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
                       <button type="submit" class="btn btn-danger btn-lg me-1 mb-1" onclick="return confirm('Apakah kamu yakin ?')">Tolak</button>
                     </form>
                   </div>

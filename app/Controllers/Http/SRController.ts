@@ -79,8 +79,6 @@ export default class SRController {
     await auth.use('web').authenticate()
 
     const id = request.input('id')
-    const nim = request.input('nim')
-    const created_at = request.input('created_at')
     const persetujuan = request.input('persetujuan')
 
     let selesai = "false"
@@ -90,14 +88,11 @@ export default class SRController {
     console.log("DEBUG : " + selesai)
     const payload = [
       id,
-      nim,
       persetujuan,
-      selesai,
-      created_at
     ]
     
     try {
-      const res = await axios.put("http://localhost:3000/submit/prodi-channel/prodi-chaincode/UpdateAsset", 
+      const res = await axios.put("http://localhost:3000/submit/prodi-channel/prodi-chaincode/UpdatePersetujuan", 
         payload, {
           headers: {
             "X-API-Key": auth.user!.role,

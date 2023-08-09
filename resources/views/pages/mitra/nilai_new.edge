@@ -18,30 +18,111 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Upload Laporan Nilai MBKM</h4>
+          </div>
           <div class="card-content">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="alert alert-light-primary">
-                    Harap upload file dengan format .pdf dan ukuran maksimal 2MB
+            @if(flashMessages.has('error'))
+              <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+            @endif
+            @if(flashMessages.has('success'))
+              <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+            @endif
+              <form method="POST" enctype="multipart/form-data" action="{{ route('nilai.store') }}">
+                <div class="row">
+                @if(ditolak)
+                  <div class="col-md-12">
+                    <div class="alert alert-danger">
+                      Kamu sudah menggunggah laporan kegiatan MBKM. <br/>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <h6>NIM</h6>
-                  <p>
-                    Pilih NIM (Nomor Induk Mahasiswa) Berdasarkan ID Pendaftaran
-                  </p>
-                  <div class="form-group">
-                    <select id="NIM" class="choices form-select" required>
-                        <option >Pilih...</option>
-                        <option value="10119116">Fakhri Adi Saputra</option>
-                        <option value="10119117">Fikri</option>
-                    </select>
+                @else
+                  @if(data_pendaftaran.length == 0)
+                  <div class="col-md-12">
+                    <div class="alert alert-light-warning">
+                      Data tidak ditemukan. <br/>
+                    </div>
                   </div>
+                  @endif
+                  
+                  <div class="col-md-12">
+                    <div class="alert alert-light-warning">
+                      Harap hati hati dalam mengisi form ini, karena data yang diinputkan tidak dapat diubah kembali. <br/>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <h5 class="mb-4">Data Mahasiswa </h5>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h6 class="mb-0">Nama Mahasiswa </h6>
+                    </div>
+                    <div class="col-sm-6 text-secondary">
+                      {{ data_mahasiswa.nama_lengkap }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h6 class="mb-0">NIM</h6>
+                    </div>
+                    <div class="col-sm-6 text-secondary">
+                      {{ data_mahasiswa.nim }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h6 class="mb-0">Tanggal Lahir</h6>
+                    </div>
+                    <div class="col-sm-6 text-secondary">
+                      {{ data_mahasiswa.tanggal_lahir }}
+                    </div>
+                  </div>
+                  <hr>
+
+                  <input 
+                    type="hidden"  
+                    name="id_pendaftaran" 
+                    value="{{ id_pendaftaran }}" 
+                    readonly
+                  />
+
+                  <input
+                    type="hidden"
+                    name="nim"
+                    value="{{ data_mahasiswa.nim }}"
+                    readonly
+                  />
+
+
+                  <div class="col-md-12 col-12">
+                    <div class="form-group">
+                      <label for="laporan" class="form-label">Laporan Nilai</label>
+                      <input class="form-control" name="laporan" type="file" id="laporan">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12 d-flex justify-content-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary me-1 mb-1"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="reset"
+                      class="btn btn-light-secondary me-1 mb-1"
+                    >
+                      Reset
+                    </button>
+                  </div>  
+                  @end    
                 </div>
-                
-                <div id="input-form"></div>
-              </div>
+              </form>  
             </div>
           </div>
         </div>
@@ -51,45 +132,6 @@
 @end
 
 @section('custom-js')
-    <script>
-      var data = {
-        "nama": "fakhri",
-        "nim": "10119116",
-        "id_pendaftaran": "23asf",
-        "mitraId": "asr-jgd"
-      };// Get the select element
-      const nimSelect = document.getElementById("NIM");
-      const inputForm = document.getElementById("input-form");
-
-      // Add an event listener to the select element
-      nimSelect.addEventListener("change", () => {
-        // Get the selected value from the select element
-        const selectedNim = nimSelect.options[nimSelect.selectedIndex].value;
-
-        // Create a new form element
-        const form = document.createElement("form");
-
-        // Add the form element to the DOM
-        document.getElementById("input-form").appendChild(form);
-        const data = {
-          "nama": "Fakhri Adi Saputra",
-          "nim": "10119116",
-          "id_pendaftaran": "23asf",
-          "mitraId": "asr-jgd",
-        };
-        
-        for (const key in data) {
-          form.innerHTML += `
-          <div class="col-md-6 col-12">
-              <div class="form-group">
-                <label for="nama">Nama</label>
-                <input type="text" name="nama" value="${data[key]}">
-              </div>
-          </div>
-          `;
-        }
-      });
-    </script>
     <script src="/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
     <script src="/assets/static/js/pages/form-element-select.js"></script>
 @end

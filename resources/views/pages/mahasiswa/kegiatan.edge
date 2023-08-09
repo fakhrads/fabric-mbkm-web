@@ -18,12 +18,6 @@
 @section('content')
   <section class="section">
   <div class="row">
-    <div class="col-12">
-        <div class="col-md-12 mb-4">
-          <a href="/mahasiswa/kegiatan/new" class="btn btn-primary btn-md float-end">Tambah Data Baru</a>
-      </div>
-    <br/>
-    <br/>
     <div class="card">
       <!-- <div class="card-header">Data Guru Yayasan</div> -->
       <div class="card-body">
@@ -38,8 +32,8 @@
             <tr>
               <th>NO </th>
               <th>ID Pendaftaran</th>
-              <th>ID Kegiatan </th>
               <th>NIM</th>
+              <th>ID Kegiatan </th>
               <th>File</th>
               <th>Tanggal Upload</th>
               <th>Action</th>
@@ -47,23 +41,36 @@
           </thead>
           <tbody>
             @each((item, index) in data)
-              @each((item2) in data_k)
                 <tr>
                   <td>{{ index + 1 }}</td>
                   <td>{{ item.Record.id }}</td>
-                  <td>{{ item2.Record.id}}</td>
                   <td>{{ item.Record.nim }}</td>
+                  @each((item2) in data_k)
                   <td>
                     @if(item.Record.id == item2.Record.pendaftaranId)
-                      <a class="badge bg-success" href="https://{{ item.Record.file }}.ipfs.w3s.link" target="_blank">Link</a>
-                    @endif
+                      {{ item2.Record.id}}
+                    @else 
+                      <span class="badge bg-danger">Belum diupload</span>
+                    @end
                   </td>
-                  <td>{{ new Date(item2.Record.created_at).getDate() }} {{ new Date(item2.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item2.Record.created_at).getFullYear() }} {{ new Date(item2.Record.created_at).getHours() }}:{{ new Date(item2.Record.created_at).getMinutes() }}</td>
                   <td>
+                    @if(item.Record.id == item2.Record.pendaftaranId)
+                      <a class="badge bg-success" href="https://{{ item.Record.file }}.ipfs.w3s.link" target="_blank">Link</a>                   
+                    @else 
+                      <span class="badge bg-danger">Belum diupload</span>
+                    @end
+                  </td>
+                  <td>
+                    @if(item.Record.id == item2.Record.pendaftaranId)
+                    {{ new Date(item2.Record.created_at).getDate() }} {{ new Date(item2.Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item2.Record.created_at).getFullYear() }} {{ new Date(item2.Record.created_at).getHours() }}:{{ new Date(item2.Record.created_at).getMinutes() }}</td>
+                    @else 
+                      <span class="badge bg-danger">Belum diupload</span>
+                    @end
+                  <td>
+                  @end
                       <a href="/mahasiswa/kegiatan/new/{{ item.Record.id }}" class="btn btn-primary"><i class="bi bi-pen"></i></a>
                   </td>
                 </tr>
-              @end
             @end
           </tbody>
         </table>

@@ -190,10 +190,6 @@
                 @if(status == false)
                   <form class="form" enctype="multipart/form-data" action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
                     <input type="hidden" value="{{ data_blockchain.id}}" name="id">
-                    <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
-                    <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
-                    <input type="hidden" value="{{ data_blockchain.program}}" name="program">
-                    <input type="hidden" value="{{ data_blockchain.persetujuanId}}" name="id_persetujuan">
                     <input type="hidden" value="true" name="persetujuan">
                     <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
                     <div class="col-md-12 col-12">
@@ -216,11 +212,7 @@
                     <hr>
                     <form class="form" action="{{ route('mbkm.setujuiMBKM') }}" method="POST">
                       <input type="hidden" value="{{ data_blockchain.id}}" name="id">
-                      <input type="hidden" value="{{ data_blockchain.nim }}" name="nim">
-                      <input type="hidden" value="{{ data_blockchain.mitraId }}" name="mitra">
-                      <input type="hidden" value="{{ data_blockchain.program}}" name="program">
                       <input type="hidden" value="denied" name="persetujuan">
-                      <input type="hidden" value="{{ data_blockchain.created_at}}" name="created_at">
                       <div class="col-sm-12 d-flex justify-content-center">
                         <button type="submit" onclick="return confirm('Apakah kamu yakin ?')" class="btn btn-danger btn-lg me-1 mb-1" ><i class="bi bi-check"></i> Tolak</button>
                       </div>

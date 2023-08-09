@@ -13,7 +13,7 @@ export default class RekognisiController {
     return response.redirect().toRoute('rekognisi.show', { nim: nim })
   }
 
-  public async show({ view, request, session, response}: HttpContextContract) {
+  public async show({ view, request, session}: HttpContextContract) {
     const nim = request.param('nim')
     try {
       const data_mahasiswa = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
@@ -42,9 +42,22 @@ export default class RekognisiController {
                   }
                 }
               )
+              try {
+                const nilai = await axios.put("http://localhost:3000/evaluate/nilai-channel/nilai-chaincode/QueryAsset", 
+                  [ nim ], {
+                    headers: {
+                      "X-API-Key": "WakilRektor",
+                    }
+                  }
+                )
 
-              console.log(sr_univ.data, sr_prodi.data, kegiatan.data)
-              return view.render('rekognisi', { data_mahasiswa: data_mahasiswa, sr_prodi: sr_prodi.data, sr_univ: sr_univ.data, kegiatan: kegiatan.data })
+                console.log(sr_univ.data, sr_prodi.data, kegiatan.data)
+                return view.render('rekognisi', { data_mahasiswa: data_mahasiswa, sr_prodi: sr_prodi.data, sr_univ: sr_univ.data, kegiatan: kegiatan.data, nilai: nilai.data })
+  
+              } catch (e) {
+                session.flash('error', e.message)
+                return view.render('rekognisi')
+              }
             } catch (e) {
               session.flash('error', e.message)
               return view.render('rekognisi')

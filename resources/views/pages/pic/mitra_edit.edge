@@ -1,0 +1,186 @@
+@layout('layouts/base')
+
+@set('title','MBKM Learning Recognition with Blockchain')
+@set('pageHeader','Edit Mitra')
+@set('subTitle', 'Halaman edit mitra')
+@set('breadCum', 'Edit Mitra')
+
+@section('custom-css')
+
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/choices.js/public/assets/styles/choices.css"
+    />
+@end
+
+@section('content')
+  <section class="section">
+    <div class="row">
+      <div class="col-12">
+        <div class="py">
+            <a href="/pic/mitra" class="btn btn-primary">Kembali</a>
+        </div>
+        <br/>
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body">
+            @if(flashMessages.has('error'))
+              <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+            @endif
+            @if(flashMessages.has('success'))
+              <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+            @endif
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h6 class="mb-0">Nama Mitra </h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary">
+                    {{ data_mitra.nama_mitra }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h6 class="mb-0">Kode Mitra</h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary">
+                    {{ data_mitra.kode_mitra }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h6 class="mb-0">Lokasi Mitra</h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary">
+                    {{ data_mitra.lokasi_mitra }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h6 class="mb-0">Deskripsi Mitra</h6>
+                  </div>
+                  <div class="col-sm-6 text-secondary">
+                    {{ data_mitra.deskripsi }}
+                  </div>
+                </div>
+                <hr> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Ganti Password Mitra</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <form method="POST" action="{{ route('pic.mitra.password') }}">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="alert alert-light-warning">
+                      Pastikan data yang diinputkan sudah benar. <br/>
+                    </div>
+                  </div>
+                  <input type="hidden" name="id" value="{{ data_mitra.user_id }}">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-control round"
+                        placeholder="Password"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12 d-flex justify-content-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary me-1 mb-1"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="reset"
+                      class="btn btn-light-secondary me-1 mb-1"
+                    >
+                      Reset
+                    </button>
+                  </div>   
+
+                </div>  
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Tautkan mahasiswa dengan mitra</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <form method="POST" action="{{ route('pic.mitra.updateMitra') }}">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="alert alert-light-warning">
+                      Pastikan data yang diinputkan sudah benar. <br/>
+                    </div>
+                  </div>
+
+                  <input type="hidden" name="id" value="{{ data_mitra.id }}">
+                  <div class="col-md-12 mb-4">
+                    <label class="form-label" for="basicSelect">ID Pendaftaran</label>
+                    <fieldset class="form-group">
+                      <select class="form-select" id="basicSelect" name="id_pendaftaran" required>
+                        @each(item in data_p)
+                          <option value="{{ item.id }}">{{ item.nim }} - {{ item.nama }}</option>
+                        @end
+                      </select>
+                    </fieldset>
+                  </div>
+
+                  <div class="col-sm-12 d-flex justify-content-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary me-1 mb-1"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="reset"
+                      class="btn btn-light-secondary me-1 mb-1"
+                    >
+                      Reset
+                    </button>
+                  </div>   
+
+                </div>  
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@end
+
+@section('custom-js')
+    <script src="/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
+    <script src="/assets/static/js/pages/form-element-select.js"></script>
+@end
