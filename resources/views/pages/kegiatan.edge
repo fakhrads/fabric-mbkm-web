@@ -1,0 +1,66 @@
+@layout('layouts/base')
+
+@set('title','MBKM Learning Recognition with Blockchain')
+@set('pageHeader','Data Kegiatan MBKM Mahasiswa')
+@set('subTitle', 'Halaman lihat data kegiatan mahasiswa')
+@set('breadCum', 'Kegiatan MBKM')
+
+@section('custom-css')
+
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/simple-datatables/style.css"
+    />
+
+    <link rel="stylesheet" href="/assets/compiled/css/table-datatable.css" />
+@end
+
+@section('content')
+  <section class="section">
+  <div class="row">
+    <div class="card">
+      <!-- <div class="card-header">Data Guru Yayasan</div> -->
+      <div class="card-body">
+        @if(flashMessages.has('error'))
+          <div class="alert alert-danger">{{ flashMessages.get('error') }}</div>
+        @endif
+        @if(flashMessages.has('success'))
+          <div class="alert alert-success">{{ flashMessages.get('success') }}</div>
+        @endif
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <th>NO </th>
+              <th>ID Pendaftaran</th>
+              <th>ID Laporan Kegiatan </th>
+              <th>NIM</th>
+              <th>File</th>
+              <th>Tanggal Upload</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each((item, index) in data)
+                <tr>
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.pendaftaranId }}</td>
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nim }}</td>
+                  <td> <a class="badge bg-success" href="https://{{ item.file }}.ipfs.ws3.link" target="_blank">Link File</a></td>
+                  <td>{{ new Date(item.created_at).getDate() }} {{ new Date(item.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.created_at).getFullYear() }} {{ new Date(item.created_at).getHours() }}:{{ new Date(item.created_at).getMinutes() }}</td>
+                </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+        </div>
+  </section>
+@end
+
+@section('custom-js')
+
+    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="/assets/static/js/pages/simple-datatables.js"></script>
+</script>
+@end

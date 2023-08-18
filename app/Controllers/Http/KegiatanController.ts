@@ -5,6 +5,24 @@ import { Web3Storage, getFilesFromPath } from 'web3.storage'
 const axios = require('axios')
 const randomstring = require("randomstring");
 export default class KegiatanController {
+
+  public async indexPIC({ view, auth, session}: HttpContextContract) {
+    await auth.use('web').authenticate()
+    try {
+      const res = await axios.put("http://localhost:3000/evaluate/kegiatan-channel/kegiatan-chaincode/GetAllAssets",
+        [  ], {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      )
+      return view.render('pages/kegiatan', { data: res.data })
+    } catch(e) {
+      session.flash('error', e.message)
+      return view.render('pages/mahasiswa/kegiatan')
+    }
+  }
+
   public async index({ view, auth, session}: HttpContextContract) {
     await auth.use('web').authenticate()
     try {
@@ -133,12 +151,4 @@ export default class KegiatanController {
       return response.redirect().back()
     }
   }
-
-  public async show({}: HttpContextContract) {}
-
-  public async edit({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

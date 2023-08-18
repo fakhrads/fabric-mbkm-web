@@ -11,7 +11,7 @@ export default class extends BaseSchema {
         .unsigned()
         .references('users.id')
         .onDelete('CASCADE')
-      table.string("nim", 255).notNullable()
+      table.string("nim", 255).unique().notNullable()
       table.string("nik", 255).notNullable()
       table.string("telepon", 255).notNullable()
       table.string("nama_lengkap", 255).notNullable()

@@ -56,15 +56,18 @@ export default class RegistryMBKMController {
         status_mbkm = false
       }
       for (let i = 0; i < result2.length; i++) {
-        if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "false") {
+        if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "false" && result2[i].Record.selesai == "false") {
           status_mbkm = true
           tanggal = result2[i].Record.created_at
-        } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "denied"){
+        } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "denied" && result2[i].Record.selesai == "true"){
           status_pendaftaran = false
           ditolak = true
           tanggal = result2[i].Record.updated_at
-        } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "true"){
+        } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "true" && result2[i].Record.selesai == "false"){
           status_pendaftaran = true
+          tanggal = result2[i].Record.updated_at
+        } else if (result2[i].Record.nim = data.nim && result2[i].Record.persetujuan == "true" && result2[i].Record.selesai == "true"){
+          status_mbkm = false
           tanggal = result2[i].Record.updated_at
         }
       }
@@ -267,6 +270,36 @@ export default class RegistryMBKMController {
     await auth.use('web').authenticate()
 
     const nim = request.param('nim')
+    const pid = request.param('pid')
+    try {
+      const data = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
+
+      const res = await axios.put("http://localhost:3000/evaluate/pendaftaran-channel/pendaftaran-chaincode/ReadAsset",
+        [ pid ], {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      )
+      let status = false;
+      if (res.data.persetujuan == "true") {
+        status = true
+      } else if (res.data.persetujuan == "false") {
+        status = false
+      }
+
+      return view.render('pages/wakilrektor/check_pendaftar', { nim: nim, data: data, data_blockchain: res.data, status: status })
+    } catch (e) {
+      console.log(e)
+      session.flash('error', e.message)
+      return response.redirect().back()
+    }
+  }
+
+  public async checkPIC({ request, view, auth, response, session }: HttpContextContract) {
+    await auth.use('web').authenticate()
+
+    const nim = request.param('nim')
     try {
       const data = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
 
@@ -284,7 +317,7 @@ export default class RegistryMBKMController {
         status = false
       }
 
-      return view.render('pages/wakilrektor/check_pendaftar', { nim: nim, data: data, data_blockchain: res.data[0].Record, status: status })
+      return view.render('pages/pic/detail_pendaftaran', { nim: nim, data: data, data_blockchain: res.data[0].Record, status: status })
     } catch (e) {
       console.log(e)
       session.flash('error', e.message)
@@ -316,14 +349,10 @@ export default class RegistryMBKMController {
         }
       );
 
-      return view.render('pages/mahasiswa/sr', { data_a: res.data, data_b: res2.data })
+      return view.render('pages/mahasiswa/riwayat', { data_a: res.data, data_b: res2.data })
 
     } catch (e) {
       console.log(e)
     }
   }
-  
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

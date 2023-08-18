@@ -41,8 +41,14 @@ export default class SRController {
           status_pembuatan = true
           id = result[i].Key
           tanggal = result[i].Record.updated_at
+        } else if (result[i].Record.nim = data.nim && result[i].Record.persetujuan == "true" && result[i].Record.selesai == "true"){
+          status_pembuatan = false
+          status = false
+          id = result[i].Key
+          tanggal = result[i].Record.updated_at
         }
       }
+      console.log(ditolak)
       return view.render('pages/mahasiswa/sr_new', { tanggal: tanggal, status_sr: status, status_pembuatan: status_pembuatan, data: data, id: id, ditolak: ditolak })
     } catch (e) {
       if(e.message === 'E_ROW_NOT_FOUND: Row not found') {
@@ -89,6 +95,7 @@ export default class SRController {
     const payload = [
       id,
       persetujuan,
+      selesai,
     ]
     
     try {
@@ -131,7 +138,7 @@ export default class SRController {
       );
 
       console.log(res)
-      session.flash('success', 'Pembuatan SR berhasil dilakukan')
+      session.flash('success', res.data.message + " ID Transaksi Blockchain : " + res.data.idTrx)
       return response.redirect().back()
     } catch(e) {
       console.log(e)
@@ -144,34 +151,29 @@ export default class SRController {
     await auth.use('web').authenticate()
 
     const nim = request.param('nim')
+    const pid = request.param('pid')
     try {
       const data = await ProfileMahasiswa.query().where('nim', nim).firstOrFail()
 
-      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/QueryAsset",
-        [ data.nim ], {
+      const res = await axios.put("http://localhost:3000/evaluate/prodi-channel/prodi-chaincode/ReadAsset",
+        [ pid ], {
           headers: {
             "X-API-Key": auth.user!.role,
           }
         }
       )
       let status = false;
-      if (res.data[0].Record.persetujuan == "true") {
+      if (res.data.persetujuan == "true") {
         status = true
-      } else if (res.data[0].Record.persetujuan == "false") {
+      } else if (res.data.persetujuan == "false") {
         status = false
       }
 
-      return view.render('pages/prodi/sr_check', { nim: nim, data: data, data_blockchain: res.data[0].Record, status: status })
+      return view.render('pages/prodi/sr_check', { nim: nim, data: data, data_blockchain: res.data, status: status })
     } catch (e) {
       console.log(e)
       session.flash('error', e.message)
       return response.redirect().back()
     }
   }
-
-  public async edit({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

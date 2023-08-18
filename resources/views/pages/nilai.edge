@@ -1,9 +1,9 @@
 @layout('layouts/base')
 
 @set('title','MBKM Learning Recognition with Blockchain')
-@set('pageHeader','Permintaan Persetujuan Prodi')
-@set('subTitle', 'Halaman pengolahan data permintaan perseujuan Prodi')
-@set('breadCum', 'Persetujuan MBKM')
+@set('pageHeader','Data Nilai Mahasiswa MBKM')
+@set('subTitle', 'Halaman lihat data nilai MBKM')
+@set('breadCum', 'Nilai MBKM')
 
 @section('custom-css')
 
@@ -32,7 +32,6 @@
               <th>NO </th>
               <th>ID </th>
               <th>NIM</th>
-              <th>Status</th>
               <th>Tanggal</th>
               <th>Terakhir Update</th>
               <th>Action</th>
@@ -44,19 +43,10 @@
                 <td>{{ index + 1 }}</td>
                 <td>{{ item.id }}</td>
                 <td>{{ item.nim }}</td>
-                <td>
-                    @if(item.persetujuan == 'true')
-                      <div class="badge bg-success">Disetujui</div>
-                    @elseif(item.persetujuan == 'false')
-                      <div class="badge bg-warning">Belum Disetujui</div>
-                    @else
-                      <div class="badge bg-danger">Ditolak</div>
-                    @endif
-                </td>
                 <td>{{ new Date(item.created_at).getDate() }} {{ new Date(item.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.created_at).getFullYear() }} {{ new Date(item.created_at).getHours() }}:{{ new Date(item.created_at).getMinutes() }}</td>
                 <td>{{ new Date(item.updated_at).getDate() }} {{ new Date(item.updated_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(item.updated_at).getFullYear() }} {{ new Date(item.updated_at).getHours() }}:{{ new Date(item.updated_at).getMinutes() }}</td>
                 <td>
-                  <a href="/prodi/sr/{{ item.nim }}/{{ item.id }}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                  <a href="{{ request.url() }}/{{ item.id }}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                 </td>
               </tr>
             @end

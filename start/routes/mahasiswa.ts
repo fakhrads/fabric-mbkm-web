@@ -6,7 +6,7 @@ Route.group(() => {
   Route.post('/profile', 'ProfilesController.updateMahasiswa').as('profile.updateMahasiswa')
 
   // ROUTE SURAT REKOMENDASI
-  Route.get('/sr', 'RegistryMBKMController.riwayatSR')
+  Route.get('/riwayat', 'RegistryMBKMController.riwayatSR')
   Route.get('/sr/new', 'SRController.indexMahasiswa')
   Route.post('/sr/new', 'SRController.storeMahasiswa').as('sr.storeMahasiswa')
 

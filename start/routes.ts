@@ -49,7 +49,8 @@ Route.get('/dashboard', async ({ view, auth }) => {
 })
 
 Route.get('/rekognisi', 'RekognisiController.index')
-Route.get('/rekognisi/:nim', 'RekognisiController.show').as('rekognisi.show')
+Route.get('/rekognisi/find', 'RekognisiController.find').as('rekognisi.find')
+Route.get('/rekognisi/:nim/:pid', 'RekognisiController.show').as('rekognisi.show')
 Route.post('/rekognisi','RekognisiController.search').as('rekognisi.search')
 Route.get('/uploads/:filename', async ({ response, params }) => {
   response.download('./', params.filename)

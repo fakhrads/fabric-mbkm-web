@@ -1,9 +1,9 @@
 @layout('layouts/base')
 
 @set('title','MBKM Learning Recognition with Blockchain')
-@set('pageHeader','Pembuatan Surat Rekomendasi Universitas')
-@set('subTitle', 'Halaman pengolahan data MBKM mahasiswa')
-@set('breadCum', 'Surat Rekomendasi Universitas')
+@set('pageHeader','Olah Data Pendaftaran MBKM')
+@set('subTitle', 'Halaman pembuatan SR universitas')
+@set('breadCum', 'Olah Data Pendaftaran MBKM')
 
 @section('custom-css')
 
@@ -58,7 +58,7 @@
                     @endif
                 </td>
                 <td>
-                    <a href="/wakilrektor/mbkm/{{ item.nim }}" class="btn btn-primary">Check</a>
+                    <a href="/wakilrektor/mbkm/{{ item.nim }}/{{ item.id }}" class="btn btn-primary">Check</a>
                 </td>
               </tr>
             @end

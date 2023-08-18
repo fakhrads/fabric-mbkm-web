@@ -8,6 +8,7 @@ Route.group(() => {
   Route.post('/mitra/delete', 'MitraController.destroy').as('pic.mitra.delete')
   Route.post('/mitra/password', 'MitraController.updatePassword').as('pic.mitra.password')
   Route.post('/mitra/updatemitra', 'MitraController.updateMitra').as('pic.mitra.updateMitra')
+  Route.get('/kegiatan', 'KegiatanController.indexPIC')
 
   Route.get('/pendaftaran', 'RegistryMBKMController.indexPIC')
 }).prefix('/pic').middleware('auth')

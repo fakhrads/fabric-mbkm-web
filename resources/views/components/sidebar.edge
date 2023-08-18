@@ -41,14 +41,14 @@
         </li>
 
         <li
-            @if( request.url() == '/mahasiswa/sr') 
+            @if( request.url() == '/mahasiswa/riwayat') 
                 class="sidebar-item active">
             @else 
                 class="sidebar-item">
             @end
-            <a href="/mahasiswa/sr" class='sidebar-link'>
+            <a href="/mahasiswa/riwayat" class='sidebar-link'>
                 <i class="bi bi-clock-fill"></i>
-                <span>Riwayat Permintaan Persetujuan Prodi</span>
+                <span>Riwayat Pendaftaran</span>
             </a>
         </li>
 
@@ -90,6 +90,18 @@
                 <span>Olah Data Pembuatan Surat Prodi</span>
             </a>
         </li>
+
+        <li
+            @if( request.url() == '/prodi/nilai') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/prodi/nilai" class='sidebar-link'>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                <span>Lihat Data Nilai</span>
+            </a>
+        </li>
         @elseif(auth.user.role == 'WakilRektor')
         <!-- MENU WR -->
         <li class="sidebar-title">Menu WR</li>
@@ -103,6 +115,18 @@
             <a href="/wakilrektor/mbkm" class='sidebar-link'>
                 <i class="bi bi-file-earmark-spreadsheet-fill"></i>
                 <span>Olah Data Pendaftaran MBKM</span>
+            </a>
+        </li>
+
+        <li
+            @if( request.url() == '/wakilrektor/nilai') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/wakilrektor/nilai" class='sidebar-link'>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                <span>Lihat Data Nilai</span>
             </a>
         </li>
         @elseif(auth.user.role == 'Mitra')
@@ -158,6 +182,31 @@
             <a href="/pic/pendaftaran" class='sidebar-link'>
                 <i class="bi bi-file-earmark-spreadsheet-fill"></i>
                 <span>Olah Data Pendaftaran</span>
+            </a>
+        </li>
+
+        <li
+            @if( request.url() == '/pic/kegiatan') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/pic/kegiatan" class='sidebar-link'>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                <span>Lihat Data Kegiatan</span>
+            </a>
+        </li>
+
+        @elseif(auth.user.role == 'Direktorat')
+        <li
+            @if( request.url() == '/direktorat/nilai') 
+                class="sidebar-item active">
+            @else 
+                class="sidebar-item">
+            @end
+            <a href="/direktorat/nilai" class='sidebar-link'>
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                <span>Lihat Data Nilai</span>
             </a>
         </li>
 

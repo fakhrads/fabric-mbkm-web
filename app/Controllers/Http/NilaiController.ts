@@ -6,6 +6,44 @@ import { Web3Storage, getFilesFromPath } from 'web3.storage'
 const randomstring = require("randomstring");
 
 export default class NilaiController {
+  public async indexAll({ view, auth, session, response }: HttpContextContract) {
+    await auth.use('web').authenticate()
+    try {
+      const data_nilai = await axios.put("http://localhost:3000/evaluate/nilai-channel/nilai-chaincode/GetAllAssets",
+        [ ], {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      )
+
+      return view.render('pages/nilai', { data: data_nilai.data })
+    } catch (e) {
+      session.flash('error', e.message)
+      return response.redirect().back()
+    }
+  }
+
+  public async indexAllNIM({ view, auth, session, response, params }: HttpContextContract) {
+    await auth.use('web').authenticate()
+    const pid = params.pid
+    try {
+      const data_nilai = await axios.put("http://localhost:3000/evaluate/nilai-channel/nilai-chaincode/ReadAsset",
+        [ pid ], {
+          headers: {
+            "X-API-Key": auth.user!.role,
+          }
+        }
+      )
+      const data_mahasiswa = await ProfileMahasiswa.query().where('nim', data_nilai.data.nim).firstOrFail()
+      console.log(data_mahasiswa)
+      return view.render('pages/nilai_check', { data_nilai: data_nilai.data, data: data_mahasiswa })
+    } catch (e) {
+      session.flash('error', e.message)
+      return response.redirect().back()
+    }
+  }
+
   public async index({ view, auth, session, response }: HttpContextContract) {
     auth.use('web').authenticate()
     
@@ -163,12 +201,4 @@ export default class NilaiController {
       return response.redirect().back()
     }
   }
-
-  public async show({}: HttpContextContract) {}
-
-  public async edit({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

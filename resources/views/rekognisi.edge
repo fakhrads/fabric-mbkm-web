@@ -16,9 +16,9 @@
                   <div class="card-content">
                   
                     <div class="card-body">
-            @if(flashMessages.has('error'))
-              <div class="alert alert-danger">Data tidak ditemukan. Hubungi admin jika ini merupakan kesalahan. Debug Error : {{ flashMessages.get('error') }}</div>
-            @else
+                    @if(flashMessages.has('error'))
+                      <div class="alert alert-danger">Data tidak ditemukan. Hubungi admin jika ini merupakan kesalahan. Debug Error : {{ flashMessages.get('error') }}</div>
+                    @else
                     <h1 class="text-center">Rekognisi Hasil Pembelajaran MBKM untuk NIM 10191116</h1>
                       <br/>
                       <br/>
@@ -26,11 +26,11 @@
                         <div class="col">
                             <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
                                 
-                                @if(sr_prodi.length > 0)
+                                @if(sr_prodi)
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2023-03-01</p>
+                                        <p class="h6 mt-3 mb-1">{{ new Date(sr_prodi.created_at).getDate() }} {{ new Date(sr_prodi.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(sr_prodi.created_at).getFullYear() }}</p>
                                         <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan Prodi</p>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2023-03-01</p>
+                                        <p class="h6 mt-3 mb-1">{{ new Date(sr_univ[0].Record.created_at).getDate() }} {{ new Date(sr_univ[0].Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(sr_univ[0].Record.created_at).getFullYear() }}</p>
                                         <p class="h6 text-muted mb-0 mb-lg-0">Persetujuan MBKM</p>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2023-03-01</p>
+                                        <p class="h6 mt-3 mb-1">{{ new Date(kegiatan[0].Record.created_at).getDate() }} {{ new Date(kegiatan[0].Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(kegiatan[0].Record.created_at).getFullYear() }}</p>
                                         <p class="h6 text-muted mb-0 mb-lg-0">Pelaporan Kegiatan MBKM</p>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2023-03-01</p>
+                                        <p class="h6 mt-3 mb-1">{{ new Date(nilai[0].Record.created_at).getDate() }} {{ new Date(nilai[0].Record.created_at).toLocaleString('default', { month: 'long' }) }} {{ new Date(nilai[0].Record.created_at).getFullYear() }}</p>
                                         <p class="h6 text-muted mb-0 mb-lg-0">Pelaporan Nilai MBKM</p>
                                     </div>
                                 </div>
@@ -111,10 +111,19 @@
                                   <i class="bi bi-clipboard"></i>
                                   <!-- <i class="fas fa-clipboard-list"></i> -->
                                </div>
-                               <div class="tracking-date">{{ nilai[0].Record.updated_at }}<span>02:02 PM</span></div>
+                               <div class="tracking-date">
+                               {{ new Date(nilai[0].Record.created_at).getDate() }} 
+                               {{ new Date(nilai[0].Record.created_at).toLocaleString('default', { month: 'long' }) }} 
+                               {{ new Date(nilai[0].Record.created_at).getFullYear() }} 
+
+                                <span>{{ new Date(nilai[0].Record.created_at).getHours() }}:{{ new Date(nilai[0].Record.created_at).getMinutes() }} WIB</span>
+                               </div>
                                <div class="tracking-content">Pelaporan Nilai MBKM.
                                 <span>
                                   <div class="badge bg-success">Telah Diunggah</div>
+                                </span>
+                                <span>
+                                  <a href="https://{{nilai[0].Record.file}}.ipfs.w3s.link" class="badge bg-success"><i class="bi bi-cloud-arrow-down-fill"></i> Unduh</a>
                                 </span>
                                </div>
                             </div>
@@ -126,10 +135,20 @@
                                   <i class="bi bi-clipboard"></i>
                                   <!-- <i class="fas fa-clipboard-list"></i> -->
                                </div>
-                               <div class="tracking-date">{{ kegiatan[0].Record.updated_at }}<span>02:02 PM</span></div>
+                               
+                               <div class="tracking-date">
+                               {{ new Date(kegiatan[0].Record.created_at).getDate() }} 
+                               {{ new Date(kegiatan[0].Record.created_at).toLocaleString('default', { month: 'long' }) }} 
+                               {{ new Date(kegiatan[0].Record.created_at).getFullYear() }} 
+
+                                <span>{{ new Date(kegiatan[0].Record.created_at).getHours() }}:{{ new Date(kegiatan[0].Record.created_at).getMinutes() }} WIB</span>
+                               </div>
                                <div class="tracking-content">Pelaporan Kegiatan MBKM.
                                 <span>
                                   <div class="badge bg-success">Telah Diunggah</div>
+                                </span>
+                                <span>
+                                  <a href="https://{{kegiatan[0].Record.file}}.ipfs.w3s.link" class="badge bg-success"><i class="bi bi-cloud-arrow-down-fill"></i> Unduh</a>
                                 </span>
                                </div>
                             </div>
@@ -141,7 +160,13 @@
                                   <i class="bi bi-clipboard"></i>
                                   <!-- <i class="fas fa-clipboard-list"></i> -->
                                </div>
-                               <div class="tracking-date">{{ sr_univ[0].Record.updated_at }}<span>02:02 PM</span></div>
+                               <div class="tracking-date">
+                               {{ new Date(sr_univ[0].Record.created_at).getDate() }} 
+                               {{ new Date(sr_univ[0].Record.created_at).toLocaleString('default', { month: 'long' }) }} 
+                               {{ new Date(sr_univ[0].Record.created_at).getFullYear() }} 
+
+                                <span>{{ new Date(sr_univ[0].Record.created_at).getHours() }}:{{ new Date(sr_univ[0].Record.created_at).getMinutes() }} WIB</span>
+                               </div>
                                <div class="tracking-content">Pembuatan Surat Rekomendasi Universitas.
                                 <span>
                                   @if(sr_univ[0].Record.persetujuan == 'true') 
@@ -157,16 +182,23 @@
                             </div>
                             @endif
 
-                            @if(sr_prodi.length > 0)
+                            @if(sr_prodi)
                             <div class="tracking-item">
                                <div class="tracking-icon status-inforeceived">
                                   <i class="bi bi-clipboard"></i>
                                   <!-- <i class="fas fa-clipboard-list"></i> -->
                                </div>
-                               <div class="tracking-date">{{ sr_prodi[0].Record.updated_at }}<span>02:02 PM</span></div>
+                               
+                               <div class="tracking-date">
+                               {{ new Date(sr_prodi.created_at).getDate() }} 
+                               {{ new Date(sr_prodi.created_at).toLocaleString('default', { month: 'long' }) }} 
+                               {{ new Date(sr_prodi.created_at).getFullYear() }} 
+
+                                <span>{{ new Date(sr_prodi.created_at).getHours() }}:{{ new Date(sr_prodi.created_at).getMinutes() }} WIB</span>
+                               </div>
                                <div class="tracking-content">Persetujuan Program Studi.
                                 <span>
-                                  @if(sr_prodi[0].Record.persetujuan == 'true') 
+                                  @if(sr_prodi.persetujuan == 'true') 
                                     <div class="badge bg-success">Telah Disetujui</div>
                                   @else
                                     <div class="badge bg-info">Menunggu Disetujui</div>
